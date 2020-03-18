@@ -23,5 +23,5 @@ jobs:
         node-version: '12.x'
     - run: npm install
       working-directory: ${{env.node-dir}}
-    - run: npm test && npm test:acceptance
+    - run: npm test && npm run test:acceptance
       working-directory: ${{env.node-dir}}
