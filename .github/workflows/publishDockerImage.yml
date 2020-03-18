@@ -1,0 +1,24 @@
+# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Publish Docker Image
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Publish Docker
+      uses: elgohr/Publish-Docker-Github-Action@2.13
+      with:
+        name: user_activity
+        username: ${{ github.actor }}
+        registry: docker.pkg.github.com
+        dockerfile: Dockerfile
