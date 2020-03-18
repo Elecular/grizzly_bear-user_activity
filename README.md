@@ -1,1 +1,1 @@
-# User Activity
+# User Activity Service
