@@ -19,6 +19,7 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@2.13
       with:
         name: user_activity
-        username: ${{ github.actor }}
+        username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+        password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
         registry: docker.pkg.github.com
         dockerfile: Dockerfile
