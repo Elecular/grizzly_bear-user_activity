@@ -6,8 +6,6 @@ name: Publish Docker Image
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
   test:
@@ -27,6 +25,7 @@ jobs:
     needs: [ test ]
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v2
     - name: 'Publish Docker Image'
       uses: elgohr/Publish-Docker-Github-Action@2.13
       with:
