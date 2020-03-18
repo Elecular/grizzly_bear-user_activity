@@ -26,7 +26,8 @@ jobs:
   publish-docker-image:
     needs: [ test ]
     runs-on: ubuntu-latest
-    - name: Publish Docker Image
+    steps:
+    - name: 'Publish Docker Image'
       uses: elgohr/Publish-Docker-Github-Action@2.13
       with:
         name: nj20/grizzly_bear-user_activity/user-activity
