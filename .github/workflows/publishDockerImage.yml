@@ -21,4 +21,5 @@ jobs:
         name: user_activity
         username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
         password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
-        registry: docker.pkg.github.com
+        registry: docker.pkg.github.com/nj20/grizzly_bear-user_activity
+
