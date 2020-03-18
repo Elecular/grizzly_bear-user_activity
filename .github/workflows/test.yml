@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     env:
       node-dir: ./app
@@ -14,7 +14,6 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '12.x'
-    - run: npm install
-      working-directory: ${{env.node-dir}}
-    - run: npm test && npm run test:acceptance
+    - name: Testing
+      run: npm install && npm test
       working-directory: ${{env.node-dir}}
