@@ -18,8 +18,8 @@ jobs:
     - name: Publish Docker
       uses: elgohr/Publish-Docker-Github-Action@2.13
       with:
-        name: user_activity
+        name: nj20/grizzly_bear-user_activity/user_activity
         username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
         password: ${{ secrets.DOCKER_REGISTRY_TOKEN }}
-        registry: docker.pkg.github.com/nj20/grizzly_bear-user_activity
+        registry: docker.pkg.github.com
 
