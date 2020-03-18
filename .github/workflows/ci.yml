@@ -13,6 +13,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      node-dir: ./app
 
     steps:
     - uses: actions/checkout@v2
@@ -20,5 +22,6 @@ jobs:
       with:
         node-version: '12.x'
     - run: npm install
-    - run: npm test
-    - run: npm test:acceptance
+      working-directory: ${{env.node-dir}}
+    - run: npm test && npm test:acceptance
+      working-directory: ${{env.node-dir}}
