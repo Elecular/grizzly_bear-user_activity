@@ -18,21 +18,7 @@ env:
   REGISTRY_HOSTNAME: gcr.io
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    env:
-      node-dir: ./app
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
-    - name: Testing
-      run: npm install && npm test
-      working-directory: ${{env.node-dir}}
-
   publish-docker-image:
-    needs: [ test ]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
