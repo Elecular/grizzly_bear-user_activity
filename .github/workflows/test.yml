@@ -4,7 +4,7 @@ on:
   deployment
 
 env:
-  EVENT: ${{ github.event }}
+  EVENT: ${{ github.event.deployment.cluster }}
 
 jobs:
   test:
@@ -14,4 +14,3 @@ jobs:
     steps:
     - name: Testing
       run: echo $EVENT
-      working-directory: ${{env.EVENT}}
