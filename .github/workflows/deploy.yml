@@ -1,0 +1,45 @@
+name: Deploy To GKE
+
+on: 
+    deployment
+
+env:
+    GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
+    GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
+    GKE_KEY: ${{secrets.GKE_KEY}}
+    GITHUB_SHA: ${{ github.sha }}
+    GKE_ZONE: ${{ github.event.deployment.gke_zone }}
+    GKE_CLUSTER: ${{ github.event.deployment.gke_cluster }}
+    IMAGE: user-activity
+    REGISTRY_HOSTNAME: gcr.io
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+
+            # Setup gcloud CLI
+            - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+              with:
+                  version: "270.0.0"
+                  service_account_email: ${{ env.GKE_EMAIL }}
+                  service_account_key: ${{ env.GKE_KEY }}
+
+            # Configure docker to use the gcloud command-line tool as a credential helper
+            - run: |
+                  # Set up docker to authenticate
+                  # via gcloud command-line tool.
+                  gcloud auth configure-docker
+
+            # Build the Docker image
+            - name: Build
+              run: |
+                  docker build -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/"$IMAGE":"$GITHUB_SHA" \
+                    --build-arg GITHUB_SHA="$GITHUB_SHA" \
+                    --build-arg GITHUB_REF="$GITHUB_REF" .
+
+            # Push the Docker image to Google Container Registry
+            - name: Publish
+              run: |
+                  docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/$IMAGE:$GITHUB_SHA
