@@ -14,4 +14,4 @@ jobs:
     steps:
     - name: Testing
       run: echo $EVENT
-      working-directory: ${{env.node-dir}}
+      working-directory: ${{env.EVENT}}
