@@ -1,8 +1,10 @@
 name: test
 
 on:
-  pull_request:
-    branches: [ master ]
+  deployment
+
+env:
+  EVENT: ${{ github.event }}
 
 jobs:
   test:
@@ -10,10 +12,6 @@ jobs:
     env:
       node-dir: ./app
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
     - name: Testing
-      run: npm install && npm test
+      run: echo $EVENT
       working-directory: ${{env.node-dir}}
