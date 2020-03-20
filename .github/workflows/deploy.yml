@@ -8,8 +8,8 @@ env:
     GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
     GKE_KEY: ${{secrets.GKE_KEY}}
     GITHUB_SHA: ${{ github.sha }}
-    GKE_ZONE: ${{ github.event.deployment.gke_zone }}
-    GKE_CLUSTER: ${{ github.event.deployment.gke_cluster }}
+    GKE_ZONE: ${{ github.event.deployment.payload.gke_zone }}
+    GKE_CLUSTER: ${{ github.event.deployment.payload.gke_cluster }}
     IMAGE: user-activity
     REGISTRY_HOSTNAME: gcr.io
 
