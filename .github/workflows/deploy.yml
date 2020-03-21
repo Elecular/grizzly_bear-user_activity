@@ -60,6 +60,12 @@ jobs:
                   kubectl rollout status deployment/$DEPLOYMENT_NAME
                   kubectl get services -o wide
 
+            - name: Cleanup Old Images
+              run: |
+                  gcloud container images list-tags gcr.io/grizzly-bear-271511/grizzly-bear-stage/user-activity --limit=999999 --sort-by=~TIMESTAMP \
+                  | awk '{print $1}' | tail -n +3 | \
+                  xargs -I XXX gcloud container images delete -q --force-delete-tags gcr.io/grizzly-bear-271511/grizzly-bear-stage/user-activity@sha256:XXX
+
             # If all steps pass, we will mark the deployment as success
             - name: Update Success Stats
               if: success()
