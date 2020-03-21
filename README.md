@@ -6,7 +6,7 @@
 
 ### Introduction
 
-This service is used for logging user activity and getting aggregated data about this data.
+This service is used for logging user activity and getting aggregated data.
 
 
 ### Workflows
