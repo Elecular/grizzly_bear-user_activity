@@ -9,6 +9,7 @@ env:
     GKE_KEY: ${{secrets.GKE_KEY}}
     GITHUB_SHA: ${{ github.sha }}
     GITHUB_AUTH_TOKEN: ${{github.token}}
+    GITHUB_REPOSITORY: ${{ github.repository }}
     GKE_ZONE: ${{ github.event.deployment.payload.gke_zone }}
     GKE_CLUSTER: ${{ github.event.deployment.payload.gke_cluster }}
     ENVIRONMENT: ${{ github.event.deployment.environment }}
@@ -62,15 +63,15 @@ jobs:
 
             - name: Cleanup Old Images
               run: |
-                  gcloud container images list-tags gcr.io/grizzly-bear-271511/grizzly-bear-stage/user-activity --limit=999999 --sort-by=~TIMESTAMP \
+                  gcloud container images list-tags $REGISTRY_HOSTNAME/$GKE_PROJECT/$GKE_CLUSTER/$IMAGE --limit=999999 --sort-by=~TIMESTAMP \
                   | awk '{print $1}' | tail -n +3 | \
-                  xargs -I XXX gcloud container images delete -q --force-delete-tags gcr.io/grizzly-bear-271511/grizzly-bear-stage/user-activity@sha256:XXX
+                  xargs -I XXX gcloud container images delete -q --force-delete-tags $REGISTRY_HOSTNAME/$GKE_PROJECT/$GKE_CLUSTER/$IMAGE@sha256:XXX
 
             # If all steps pass, we will mark the deployment as success
             - name: Update Success Stats
               if: success()
               run: |
-                  curl --location --request POST "https://api.github.com/repos/nj20/grizzly_bear-user_activity/deployments/$DEPLOYMENT_ID/statuses" \
+                  curl --location --request POST "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments/$DEPLOYMENT_ID/statuses" \
                   --header "Authorization: token $GITHUB_AUTH_TOKEN" \
                   --header 'Content-Type: application/json' \
                   --data-raw '{
@@ -81,7 +82,7 @@ jobs:
             - name: Update Failure Stats
               if: failure()
               run: |
-                  curl --location --request POST "https://api.github.com/repos/nj20/grizzly_bear-user_activity/deployments/$DEPLOYMENT_ID/statuses" \
+                  curl --location --request POST "https://api.github.com/repos/$GITHUB_REPOSITORY/deployments/$DEPLOYMENT_ID/statuses" \
                   --header "Authorization: token $GITHUB_AUTH_TOKEN" \
                   --header 'Content-Type: application/json' \
                   --data-raw '{
