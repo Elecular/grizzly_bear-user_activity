@@ -1,3 +1,18 @@
+# This workflow is used for deploying this application to Google Kubernetes Engine.
+# These are the following steps in order to setup the deployment workflow:
+#   1. Setup the following secrets in the repository:
+#       a. GKE_PROJECT
+#       b. GKE_EMAIL
+#       b. GKE_KEY
+#   2. Then set the following environment variables in this file:
+#       a. DEPLOYMENT_NAME
+#       b. IMAGE
+#   3. Once this is setup, you can trigger a deployment event (https://developer.github.com/v3/repos/deployments/#create-a-deployment)
+#       a. Set the environment to stage/prod
+#       b. Add the following fields to the payload:
+#           1. gke_cluster
+#           2. gke_zone 
+
 name: Deploy To GKE
 
 on: 
