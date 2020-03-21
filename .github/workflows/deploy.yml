@@ -8,10 +8,12 @@ env:
     GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
     GKE_KEY: ${{secrets.GKE_KEY}}
     GITHUB_SHA: ${{ github.sha }}
+    GITHUB_AUTH_TOKEN: ${{github.token}}
     GKE_ZONE: ${{ github.event.deployment.payload.gke_zone }}
     GKE_CLUSTER: ${{ github.event.deployment.payload.gke_cluster }}
     ENVIRONMENT: ${{ github.event.deployment.environment }}
     DEPLOYMENT_NAME: user-activity-deployment
+    DEPLOYMENT_ID: ${{ github.event.deployment.id }}
     IMAGE: user-activity
     REGISTRY_HOSTNAME: gcr.io
 
@@ -45,15 +47,37 @@ jobs:
             - name: Publish
               run: |
                   docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/$IMAGE
-            
+
             # Deploy the Docker image to the GKE cluster
             - name: Deploy
               run: |
-                gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                cd kubernetes/overlays/$ENVIRONMENT
-                curl -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-                chmod u+x ./kustomize
-                ./kustomize edit set image XXXX=$REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/$IMAGE
-                ./kustomize build . | kubectl apply -f -
-                kubectl rollout status deployment/$DEPLOYMENT_NAME
-                kubectl get services -o wide
+                  gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+                  cd kubernetes/overlays/$ENVIRONMENT
+                  curl -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
+                  chmod u+x ./kustomize
+                  ./kustomize edit set image XXXX=$REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/$IMAGE
+                  ./kustomize build . | kubectl apply -f -
+                  kubectl rollout status deployment/$DEPLOYMENT_NAME
+                  kubectl get services -o wide
+
+            # If all steps pass, we will mark the deployment as success
+            - name: Update Success Stats
+              if: success()
+              run: |
+                    curl --location --request POST 'https://api.github.com/repos/nj20/grizzly_bear-user_activity/deployments/$DEPLOYMENT_ID/statuses' \
+                    --header 'Authorization: token $GITHUB_AUTH_TOKEN' \
+                    --header 'Content-Type: application/json' \
+                    --data-raw '{
+                        "state": "success"
+                    }'
+
+            # If all steps fail, we will mark the deployment as failed
+            - name: Update Failure Stats
+              if: failure()
+              run: |
+                    curl --location --request POST 'https://api.github.com/repos/nj20/grizzly_bear-user_activity/deployments/$DEPLOYMENT_ID/statuses' \
+                    --header 'Authorization: token $GITHUB_AUTH_TOKEN' \
+                    --header 'Content-Type: application/json' \
+                    --data-raw '{
+                        "state": "failure"
+                    }'
