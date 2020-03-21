@@ -1,8 +1,6 @@
 # User Activity Service
 
-![Test](https://github.com/nj20/grizzly_bear-user_activity/workflows/Test/badge.svg?branch=master)
-
-![Deploy To GKE](https://github.com/nj20/grizzly_bear-user_activity/workflows/Deploy%20To%20GKE/badge.svg?branch=master)
+![Test](https://github.com/nj20/grizzly_bear-user_activity/workflows/Test/badge.svg?branch=master) ![Deploy To GKE](https://github.com/nj20/grizzly_bear-user_activity/workflows/Deploy%20To%20GKE/badge.svg?branch=master)
 
 ### Introduction
 
