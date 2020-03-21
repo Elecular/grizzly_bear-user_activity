@@ -64,20 +64,20 @@ jobs:
             - name: Update Success Stats
               if: success()
               run: |
-                    curl --location --request POST 'https://api.github.com/repos/nj20/grizzly_bear-user_activity/deployments/$DEPLOYMENT_ID/statuses' \
-                    --header 'Authorization: token $GITHUB_AUTH_TOKEN' \
-                    --header 'Content-Type: application/json' \
-                    --data-raw '{
-                        "state": "success"
-                    }'
+                  curl --location --request POST 'https://api.github.com/repos/nj20/grizzly_bear-user_activity/deployments/$DEPLOYMENT_ID/statuses' \
+                  --header 'Authorization: token $GITHUB_AUTH_TOKEN' \
+                  --header 'Content-Type: application/json' \
+                  --data-raw '{
+                      "state": "success"
+                  }'
 
             # If all steps fail, we will mark the deployment as failed
             - name: Update Failure Stats
               if: failure()
               run: |
-                    curl --location --request POST 'https://api.github.com/repos/nj20/grizzly_bear-user_activity/deployments/$DEPLOYMENT_ID/statuses' \
-                    --header 'Authorization: token $GITHUB_AUTH_TOKEN' \
-                    --header 'Content-Type: application/json' \
-                    --data-raw '{
-                        "state": "failure"
-                    }'
+                  curl --location --request POST 'https://api.github.com/repos/nj20/grizzly_bear-user_activity/deployments/$DEPLOYMENT_ID/statuses' \
+                  --header 'Authorization: token $GITHUB_AUTH_TOKEN' \
+                  --header 'Content-Type: application/json' \
+                  --data-raw '{
+                      "state": "failure"
+                  }'
