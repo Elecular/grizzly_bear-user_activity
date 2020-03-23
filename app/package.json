@@ -3,8 +3,8 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "node ./bin/www",
-        "start:dev": "nodemon ./bin/www",
+        "start": "node --unhandled-rejections=strict ./bin/www",
+        "start:dev": "nodemon --unhandled-rejections=strict ./bin/www",
         "test": "npm run test:mocha && npm run test:acceptance",
         "test:mocha": "mocha",
         "test:acceptance": "docker-compose up --build -d && wait-on --timeout 60000 http://localhost:80 && newman run test/acceptance_test.postman_collection.json && docker-compose stop"
