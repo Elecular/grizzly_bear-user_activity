@@ -1,0 +1,26 @@
+{
+    "bsonType": "object",
+    "required": ["userId", "projectId, userAction, date, timestamp"],
+    "properties": {
+        "userId": {
+            "bsonType": "string",
+            "description": "Id of the user that engaged in this activity"
+        },
+        "projectId": {
+            "bsonType": "objectId",
+            "description": "Id of the project this user belongs to"
+        },
+        "userAction": {
+            "bsonType": "string",
+            "description": "The action performed by this user"
+        },
+        "date": {
+            "bsonType": "timestamp",
+            "description": "The date on which this action happened"
+        },
+        "timestamp": {
+            "bsonType": "timestamp",
+            "description": "The exact time on which this action happened"
+        }
+    }
+}

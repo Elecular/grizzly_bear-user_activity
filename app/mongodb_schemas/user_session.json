@@ -1,0 +1,30 @@
+{
+    "bsonType": "object",
+    "required": ["userId", "projectId, segments, date, timestamp"],
+    "properties": {
+        "userId": {
+            "bsonType": "string",
+            "description": "Id of the user that engaged in this activity"
+        },
+        "projectId": {
+            "bsonType": "objectId",
+            "description": "Id of the project this user belongs to"
+        },
+        "segments": {
+            "bsonType": "array",
+            "description": "The segments of this user",
+            "items": {
+                "bsonType": "string",
+                "description": "A segmentation"
+            }
+        },
+        "date": {
+            "bsonType": "timestamp",
+            "description": "The date on which this action happened"
+        },
+        "timestamp": {
+            "bsonType": "timestamp",
+            "description": "The exact time on which this action happened"
+        }
+    }
+}

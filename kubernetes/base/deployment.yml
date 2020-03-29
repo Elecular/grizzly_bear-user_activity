@@ -19,3 +19,14 @@ spec:
         image: XXXX
         ports:
         - containerPort: 3000
+        env:
+          - name: MONGODB_URL
+            valueFrom:
+              secretKeyRef:
+                name: user-activity-db-secret
+                key: MONGODB_URL
+          - name: MONGODB_DATABASE
+            valueFrom:
+              secretKeyRef:
+                name: user-activity-db-secret
+                key: MONGODB_DATABASE
