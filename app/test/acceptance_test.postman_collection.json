@@ -1,12 +1,12 @@
 {
     "info": {
-        "_postman_id": "88c126c4-9d43-40ab-a728-fbaff8fe5d76",
-        "name": "acceptance_test",
+        "_postman_id": "3021ed37-e723-4527-a2cc-376da512802e",
+        "name": "user_activity_acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
         {
-            "name": "Test Index",
+            "name": "Test Status",
             "event": [
                 {
                     "listen": "test",
@@ -25,8 +25,223 @@
                 "method": "GET",
                 "header": [],
                 "url": {
-                    "raw": "localhost",
-                    "host": ["localhost"]
+                    "raw": "localhost/status",
+                    "host": ["localhost"],
+                    "path": ["status"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Add User Session",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "",
+                            "pm.test(\"Response has user id\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.userId).to.eql(\"testUser\");",
+                            "});",
+                            "",
+                            "",
+                            "pm.environment.set(\"sampleSessionId\", pm.response.json()._id);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "projectId",
+                        "value": "507f1f77bcf86cd799439011",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"userId\": \"testUser\",\n\t\"segments\": [\"female\", \"german\"]\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/user-session",
+                    "host": ["localhost"],
+                    "path": ["user-session"],
+                    "query": [
+                        {
+                            "key": "",
+                            "value": "",
+                            "disabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Add Invalid User Session",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            ""
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "projectId",
+                        "type": "text",
+                        "value": "507f1f77bcf86cd799439"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"userId\": \"testUser\",\n\t\"segments\": [\"female\", \"german\"]\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/user-session",
+                    "host": ["localhost"],
+                    "path": ["user-session"],
+                    "query": [
+                        {
+                            "key": "",
+                            "value": "",
+                            "disabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Add User Activity",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "",
+                            "pm.test(\"Response has userAction\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.userAction).to.eql(\"testAction\");",
+                            "});",
+                            ""
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "projectId",
+                        "type": "text",
+                        "value": "507f1f77bcf86cd799439011"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"sessionId\": \"{{sampleSessionId}}\",\n\t\"userAction\": \"testAction\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/user-activity",
+                    "host": ["localhost"],
+                    "path": ["user-activity"],
+                    "query": [
+                        {
+                            "key": "",
+                            "value": "",
+                            "disabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Add Invalid User Activity",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 400\", function () {",
+                            "    pm.response.to.have.status(400);",
+                            "});",
+                            ""
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "projectId",
+                        "type": "text",
+                        "value": "507f1f77bcf86cd799439011"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"sessionId\": \"testUser\",\n\t\"userAction\": \"testAction\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/user-activity",
+                    "host": ["localhost"],
+                    "path": ["user-activity"],
+                    "query": [
+                        {
+                            "key": "",
+                            "value": "",
+                            "disabled": true
+                        }
+                    ]
                 }
             },
             "response": []

@@ -1,6 +1,6 @@
 {
     "bsonType": "object",
-    "required": ["userId", "projectId, segments, date, timestamp"],
+    "required": ["userId", "projectId", "segments", "hourNumber", "timestamp"],
     "properties": {
         "userId": {
             "bsonType": "string",
@@ -18,13 +18,13 @@
                 "description": "A segmentation"
             }
         },
-        "date": {
-            "bsonType": "timestamp",
-            "description": "The date on which this action happened"
+        "hourNumber": {
+            "bsonType": "number",
+            "description": "Unix timestamp (in hours). This is basically number of hours since epoch (1970-01-01 UTC)."
         },
         "timestamp": {
             "bsonType": "timestamp",
-            "description": "The exact time on which this action happened"
+            "description": "The unix timestamp (milliseconds) on which this action happened"
         }
     }
 }
