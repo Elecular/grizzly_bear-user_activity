@@ -1,15 +1,15 @@
-let assert = require("assert");
-let mongo = require("../../db/mongodb");
-let ObjectID = require("mongodb").ObjectID;
-let userSessionController = require("../../controllers/user_session");
-let userActivityController = require("../../controllers/user_activity");
+const assert = require("assert");
+const mongo = require("../../db/mongodb");
+const ObjectID = require("mongodb").ObjectID;
+const userSessionController = require("../../controllers/user_session");
+const userActivityController = require("../../controllers/user_activity");
 
-let projectId = ObjectID().toString();
+const projectId = ObjectID().toString();
 let session = null;
 
 beforeEach(async () => {
-    let db = await mongo.connect();
-    let collections = await db.listCollections().toArray();
+    const db = await mongo.connect();
+    const collections = await db.listCollections().toArray();
     for (let collection of collections) {
         await db.collection(collection.name).deleteMany({});
     }

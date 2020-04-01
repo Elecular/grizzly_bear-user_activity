@@ -2,7 +2,7 @@ const mongo = require("../db/mongodb");
 const ObjectID = require("mongodb").ObjectID;
 const Timestamp = require("mongodb").Timestamp;
 const logger = require("log4js").getLogger();
-var createError = require("http-errors");
+const createError = require("http-errors");
 
 /**
  * Adds a new user session to the database
@@ -16,7 +16,7 @@ module.exports.addUserSession = async (projectId, userSession) => {
         throw new createError(400, "Invalid Project Id");
     }
 
-    let db = await mongo.connect();
+    const db = await mongo.connect();
 
     try {
         const timestamp = Date.now();
@@ -45,7 +45,7 @@ module.exports.isValidSession = async (projectId, sessionId) => {
         return false;
     }
 
-    let db = await mongo.connect();
+    const db = await mongo.connect();
 
     try {
         const session = await db.collection("user_session").findOne({

@@ -1,11 +1,11 @@
-let assert = require("assert");
-let mongo = require("../../db/mongodb");
-let ObjectID = require("mongodb").ObjectID;
-let userSessionController = require("../../controllers/user_session");
+const assert = require("assert");
+const mongo = require("../../db/mongodb");
+const ObjectID = require("mongodb").ObjectID;
+const userSessionController = require("../../controllers/user_session");
 
 beforeEach(async () => {
-    let db = await mongo.connect();
-    let collections = await db.listCollections().toArray();
+    const db = await mongo.connect();
+    const collections = await db.listCollections().toArray();
     for (let collection of collections) {
         await db.collection(collection.name).deleteMany({});
     }
@@ -17,7 +17,7 @@ afterAll(async () => {
 
 describe("UserSession Controller", () => {
     it("can add new session", async () => {
-        let projectId = ObjectID().toString();
+        const projectId = ObjectID().toString();
         const res = await userSessionController.addUserSession(
             projectId,
             mockUserSession("testUser"),

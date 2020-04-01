@@ -12,7 +12,7 @@ const userSessionController = require("../controllers/user_session");
  * @returns {Promise<Object>}
  */
 module.exports.addUserActivity = async (projectId, userActivity) => {
-    let db = await mongo.connect();
+    const db = await mongo.connect();
 
     if (!projectId || !ObjectID.isValid(projectId)) {
         throw new createError(400, "Invalid projectId");

@@ -1,7 +1,7 @@
-let express = require("express");
-let router = express.Router();
-let userSessionController = require("../controllers/user_session");
-let userActivityController = require("../controllers/user_activity");
+const express = require("express");
+const router = express.Router();
+const userSessionController = require("../controllers/user_session");
+const userActivityController = require("../controllers/user_activity");
 
 /* GET home page. */
 router.get("/", function(req, res) {
