@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: experimentStats
+  name: experiment-stats
 spec:
   schedule: "* * * * *"
   jobTemplate:
@@ -9,6 +9,6 @@ spec:
       template:
         spec:
           containers:
-          - name: experimentStats
+          - name: experiment-stats
             image: BATCH_DOCKER_IMAGE
           restartPolicy: OnFailure
