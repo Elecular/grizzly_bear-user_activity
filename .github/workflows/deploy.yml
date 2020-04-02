@@ -53,7 +53,7 @@ jobs:
                   gcloud auth configure-docker
 
             # Build the Docker image for Web
-            - name: Build Web
+            - name: Build Web Docker Image
               run: |
                   docker build -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/web/"$IMAGE":"$GITHUB_SHA" \
                     --build-arg GITHUB_SHA="$GITHUB_SHA" \
@@ -61,7 +61,7 @@ jobs:
                     -f Dockerfile.web .
 
             # Build the Docker image for Batch
-            - name: Build Batch
+            - name: Build Batch Docker Image
               run: |
                   docker build -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/batch/"$IMAGE":"$GITHUB_SHA" \
                     --build-arg GITHUB_SHA="$GITHUB_SHA" \
@@ -69,12 +69,12 @@ jobs:
                     -f Dockerfile.batch .
 
             # Push the Web Docker image to Google Container Registry
-            - name: Publish Web
+            - name: Publish Web Docker Image
               run: |
                   docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/web/$IMAGE:$GITHUB_SHA
 
              # Push the BatchDocker image to Google Container Registry
-            - name: Publish
+            - name: Publish Batch Docker Image
               run: |
                   docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/batch/$IMAGE:$GITHUB_SHA
 
