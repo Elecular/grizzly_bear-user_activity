@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: user-activity
-        image: XXXX
+        image: WEB_DOCKER_IMAGE
         ports:
         - containerPort: 3000
         env:

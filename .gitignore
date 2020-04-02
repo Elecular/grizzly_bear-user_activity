@@ -102,3 +102,15 @@ dist
 
 # TernJS port file
 .tern-port
+
+#Scala
+
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+.history
+.cache
+.lib/

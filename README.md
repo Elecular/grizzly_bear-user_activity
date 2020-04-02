@@ -52,7 +52,7 @@ If the github-auth-token is invalid, the command will return the following respo
 cd kubernetes/overlays/stage
 curl -o kustomize --location https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
 chmod u+x ./kustomize
-./kustomize edit set image XXXX=<image>
+./kustomize edit set image WEB_DOCKER_IMAGE=<image>
 ./kustomize build . | kubectl apply -f -
 ```
 
