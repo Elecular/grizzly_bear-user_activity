@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "start": "node --unhandled-rejections=strict ./bin/www",
+        "data-dump": "",
         "start:dev": "./bin/dev.sh",
         "test": "npm run test:jest && npm run test:acceptance",
         "test:jest": "./bin/jest-test.sh",

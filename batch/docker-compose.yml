@@ -1,0 +1,41 @@
+  
+version: '3'
+services:
+  spark-batch:
+    depends_on:
+      - web
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+    - ./src:/code/src
+    - ./build.sbt:/code/build.sbt
+    links:
+    - "db:database"
+    environment:
+      MASTER: local
+      MONGODB_URL: mongodb://username:password@database
+      MONGODB_DATABASE: experiments
+    command: >
+      bash -c "sbt assembly
+      && ./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class "UserActivityProcessor" target/scala-2.11/fat-build.jar"
+  web:
+    depends_on:
+      - db
+    build:
+      context: ..
+      dockerfile: Dockerfile.web
+    ports:
+    - '80:3000'
+    volumes:
+    - /code/node_modules
+    links:
+    - "db:database"
+    environment:
+      MONGODB_URL: mongodb://username:password@database:27017
+      MONGODB_DATABASE: experiments
+  db:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: username
+      MONGO_INITDB_ROOT_PASSWORD: password

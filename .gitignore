@@ -105,6 +105,9 @@ dist
 
 #Scala
 
+*.class
+*.log
+
 dist/*
 target/
 lib_managed/
@@ -114,3 +117,8 @@ project/plugins/project/
 .history
 .cache
 .lib/
+
+.metals/
+.bloop/
+batch/project/metals.sbt
+
