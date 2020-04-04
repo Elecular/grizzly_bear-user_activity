@@ -23,8 +23,8 @@ services:
     depends_on:
       - db
     build:
-      context: ..
-      dockerfile: Dockerfile.web
+      context: ../app
+      dockerfile: Dockerfile.dev
     ports:
     - '80:3000'
     volumes:

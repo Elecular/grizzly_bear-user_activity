@@ -1,0 +1,16 @@
+version: '3'
+services:
+  web:
+    command: >
+      bash -c "nohup npm start &
+      node bin/random-data-dump.js \
+      --projects 5e865ed82a2aeb6436f498dc,5e865ed82a2aeb6436f498de,5e865ed82a2aeb6436f498d7,5e865ed82a2aeb6436f498dd \
+      --segments one,two,three,four \
+      --userVolume 100 --sessionVolume 1 -\
+      -minTimestamp 79839129600000 --maxTimestamp 79852176000000 \
+      --time 10000"
+  spark-batch:
+    command: >
+      bash -c "sbt assembly &&
+      ./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class "UserActivityProcessor" target/scala-2.11/fat-build.jar"
+      

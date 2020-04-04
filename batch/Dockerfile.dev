@@ -9,5 +9,5 @@ COPY . code
 WORKDIR /code
 
 RUN wget http://www-eu.apache.org/dist/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz
-RUN tar -xzf spark-2.4.1-bin-hadoop2.7.tgz
+RUN tar -xzf spark-2.4.5-bin-hadoop2.7.tgz
 
