@@ -26,5 +26,5 @@ spec:
                 valueFrom:
                   configMapKeyRef:
                     name: user-activity-config-map
-                    key: local
+                    key: SPARK_CLUSTER_MASTER
           restartPolicy: OnFailure
