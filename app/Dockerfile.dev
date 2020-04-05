@@ -1,7 +1,9 @@
 FROM node:12.16
+
 COPY . code
 WORKDIR /code
 
 ENV NODE_ENV=dev
 RUN npm install
+
 CMD ["npm", "start"]

@@ -9,8 +9,4 @@ services:
         --userVolume 100 --sessionVolume 100 \
         --minTimestamp 79839129600000 --maxTimestamp 79852176000000 \
         --time 1000"
-  spark-batch:
-    command: >
-      bash -c "sbt assembly &&
-      ./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class "UserActivityProcessor" target/scala-2.11/fat-build.jar"
       

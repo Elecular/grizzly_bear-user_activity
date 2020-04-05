@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: experiment-stats
 spec:
-  schedule: "0 * * * *"
+  schedule: "* * * * *"
   jobTemplate:
     spec:
       template:
@@ -11,4 +11,20 @@ spec:
           containers:
           - name: experiment-stats
             image: BATCH_DOCKER_IMAGE
+            env:
+              - name: MONGODB_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: user-activity-db-secret
+                    key: MONGODB_URL
+              - name: MONGODB_DATABASE
+                valueFrom:
+                  secretKeyRef:
+                    name: user-activity-db-secret
+                    key: MONGODB_DATABASE
+              - name: MASTER
+                valueFrom:
+                  configMapKeyRef:
+                    name: user-activity-config-map
+                    key: local
           restartPolicy: OnFailure

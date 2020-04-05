@@ -8,7 +8,7 @@ object AppSparkSession {
 
     private val master = sys.env("MASTER");
     private val appName = "UserActivityProcessor";
-
+    
     private val spark = SparkSession.builder()
         .master(master)
         .appName(appName)

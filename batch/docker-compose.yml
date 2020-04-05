@@ -8,8 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile.dev
     volumes:
-    - ./src:/code/src
-    - ./build.sbt:/code/build.sbt
+    - ./:/code/
     links:
     - "db:database"
     environment:
@@ -17,8 +16,7 @@ services:
       MONGODB_URL: mongodb://username:password@database
       MONGODB_DATABASE: experiments
     command: >
-      bash -c "sbt assembly
-      && ./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class "UserActivityProcessor" target/scala-2.11/fat-build.jar"
+      bash -c "sbt local/reStart && tail -F anything"
   web:
     depends_on:
       - db
