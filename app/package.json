@@ -5,6 +5,7 @@
     "scripts": {
         "start": "node --unhandled-rejections=strict ./bin/www",
         "start:dev": "./bin/dev.sh",
+        "random-data-dump:dev": "node ./bin/data-dump/random.js",
         "test": "npm run test:jest && npm run test:acceptance",
         "test:jest": "./bin/jest-test.sh",
         "test:acceptance": "./bin/postman-test.sh"
@@ -16,7 +17,8 @@
         "log4js": "^6.1.2",
         "mongodb": "^3.5.5",
         "morgan": "~1.9.1",
-        "recursive-readdir": "^2.2.2"
+        "recursive-readdir": "^2.2.2",
+        "yargs": "^15.3.1"
     },
     "devDependencies": {
         "eslint": "^6.8.0",

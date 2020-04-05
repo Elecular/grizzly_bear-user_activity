@@ -19,7 +19,7 @@ module.exports.addUserSession = async (projectId, userSession) => {
     const db = await mongo.connect();
 
     try {
-        const timestamp = Date.now();
+        const timestamp = userSession.timestamp || Date.now();
         const response = await db.collection("user_session").insertOne({
             ...userSession,
             projectId: ObjectID(projectId),

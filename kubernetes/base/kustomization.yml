@@ -4,8 +4,5 @@ resources:
 - deployment.yml
 - service.yml
 - cronjob.yml
-configMapGenerator:
-- name: env
-  literals:
-    - env=dev
+- configmap.yml
 

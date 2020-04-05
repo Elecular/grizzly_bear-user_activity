@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    command: >
+      bash -c "npm start -- \
+        --randomDataDump \
+        --projects 5e865ed82a2aeb6436f498dc,5e865ed82a2aeb6436f498de,5e865ed82a2aeb6436f498d7,5e865ed82a2aeb6436f498dd \
+        --segments one,two,three,four \
+        --userVolume 100 --sessionVolume 100 \
+        --minTimestamp 79839129600000 --maxTimestamp 79852176000000 \
+        --time 1000"
+      
