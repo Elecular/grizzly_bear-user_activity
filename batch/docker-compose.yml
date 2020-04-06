@@ -13,7 +13,7 @@ services:
     - "db:database"
     environment:
       MASTER: local
-      MONGODB_URL: mongodb://username:password@database
+      MONGODB_URL: mongodb://username:password@database:27017
       MONGODB_DATABASE: experiments
     command: >
       bash -c "sbt local/reStart && tail -F anything"

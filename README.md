@@ -71,8 +71,15 @@ chmod u+x ./kustomize
 ./kustomize build . | kubectl apply -f -
 ```
 
-* Note that the images for WEB_DOCKER_IMAGE and BATCH_DOCKER_IMAGE can be found in app/Dockerfile and batch/Dockerfile respsectively
+* Note that the images for WEB_DOCKER_IMAGE and BATCH_DOCKER_IMAGE can be found in Dockerfile.web and Dockerfile.batch respsectively
 * You must setup a mongodb service and configure the config and secrets as shown below
+
+###### Config-Map To Configure
+
+```
+user-activity-config-map:
+  SPARK_CLUSTER_MASTER: <address of master cluster for spark jobs>
+```
 
 ###### Secrets To Configure
 

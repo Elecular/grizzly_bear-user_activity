@@ -11,6 +11,8 @@ object AppSparkSession {
     
     private val spark = SparkSession.builder()
         .master(master)
+        .config("spark.mongodb.input.database", sys.env("MONGODB_DATABASE"))
+        .config("spark.mongodb.input.collection", "user_session")
         .appName(appName)
         .getOrCreate();
 

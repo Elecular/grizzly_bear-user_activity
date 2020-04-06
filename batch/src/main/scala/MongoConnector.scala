@@ -1,10 +1,11 @@
 import org.apache.spark.rdd.RDD
 import com.mongodb.spark.MongoSpark
 import com.mongodb.spark.config._
+import org.bson.Document
 
 object MongoConnector {
     
-    def loadCollection(collectionName: String): RDD[String] = {
+    def loadCollection(collectionName: String): RDD[Document] = {
         val readConfig = ReadConfig(
             Map(
                 "uri" -> sys.env("MONGODB_URL"),

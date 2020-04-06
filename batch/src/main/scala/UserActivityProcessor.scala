@@ -1,6 +1,15 @@
 import org.apache.spark.sql.SparkSession
 
-object UserActivityProcessor extends App {
-    AppSparkSession;
-    println("Hello Spark!");
+object UserActivityProcessor {
+
+    def main(args: Array[String])  { 
+        // prints Hello World 
+        AppSparkSession;
+        println(MongoConnector.loadCollection("user_session").count());
+        println("Hello World!")  
+    } 
+    
+    
+    //println(MongoConnector.loadCollection("user_session").count());
+    //println("Hello Spark!");
 }

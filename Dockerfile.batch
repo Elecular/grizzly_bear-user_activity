@@ -13,4 +13,4 @@ RUN sbt app/assembly
 ADD http://www-eu.apache.org/dist/spark/spark-2.4.5/spark-2.4.5-bin-hadoop2.7.tgz .
 RUN tar -xzf spark-2.4.5-bin-hadoop2.7.tgz
 
-CMD ./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class "UserActivityProcessor" target/scala-2.11/build.jar
+CMD ./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class "UserActivityProcessor" target/scala-2.12/build.jar
