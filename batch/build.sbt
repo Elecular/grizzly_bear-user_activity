@@ -2,7 +2,7 @@ lazy val app = (project in file(".")).
     settings(
         name := "User Activity Processor",
         version := "1.0",
-        scalaVersion := "2.11.7",
+        scalaVersion := "2.11.12",
         assemblyJarName in assembly := "build.jar",
         libraryDependencies ++= Seq(
             "org.mongodb.spark" %% "mongo-spark-connector" % "2.4.1",
@@ -14,7 +14,7 @@ lazy val app = (project in file(".")).
 lazy val local = project.in(file("local")).dependsOn(RootProject(file("."))).settings(
     name := "Dev User Activity Processor",
     version := "1.0",
-    scalaVersion := "2.11.7",
+    scalaVersion := "2.11.12",
     libraryDependencies ++= Seq(
         "org.mongodb.spark" %% "mongo-spark-connector" % "2.4.1",
         "org.apache.spark" %% "spark-core" % "2.4.5",
