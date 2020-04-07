@@ -55,7 +55,9 @@ jobs:
             # Build the Docker image for Web
             - name: Build Web Docker Image
               run: |
-                  docker build -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/web/"$IMAGE":"$GITHUB_SHA" \
+                  docker build \
+                    -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/web/"$IMAGE":"$GITHUB_SHA" \
+                    -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/web/"$IMAGE":latest \
                     --build-arg GITHUB_SHA="$GITHUB_SHA" \
                     --build-arg GITHUB_REF="$GITHUB_REF" \
                     -f Dockerfile.web .
@@ -63,7 +65,9 @@ jobs:
             # Build the Docker image for Batch
             - name: Build Batch Docker Image
               run: |
-                  docker build -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/batch/"$IMAGE":"$GITHUB_SHA" \
+                  docker build \
+                    -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/batch/"$IMAGE":"$GITHUB_SHA" \
+                    -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/batch/"$IMAGE":latest \
                     --build-arg GITHUB_SHA="$GITHUB_SHA" \
                     --build-arg GITHUB_REF="$GITHUB_REF" \
                     -f Dockerfile.batch .
@@ -71,12 +75,12 @@ jobs:
             # Push the Web Docker image to Google Container Registry
             - name: Publish Web Docker Image
               run: |
-                  docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/web/$IMAGE:$GITHUB_SHA
+                  docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/web/$IMAGE
 
              # Push the BatchDocker image to Google Container Registry
             - name: Publish Batch Docker Image
               run: |
-                  docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/batch/$IMAGE:$GITHUB_SHA
+                  docker push $REGISTRY_HOSTNAME/$GKE_PROJECT/"$GKE_CLUSTER"/batch/$IMAGE
 
             # Deploy the Docker image to the GKE cluster
             - name: Deploy
