@@ -28,6 +28,41 @@ describe("UserSession Controller", () => {
         assert.ok(res.hourNumber);
     });
 
+    it("can add new session with duplicate segments", async () => {
+        const projectId = ObjectID().toString();
+        const res = await userSessionController.addUserSession(projectId, {
+            ...mockUserSession("testUser"),
+            segments: ["test", "test1", "test1"],
+        });
+        assert.deepEqual(res.segments, ["test", "test1", "all"]);
+    });
+
+    it("can add new session with no segments", async () => {
+        const projectId = ObjectID().toString();
+        const res = await userSessionController.addUserSession(projectId, {
+            ...mockUserSession("testUser"),
+            segments: [],
+        });
+        assert.deepEqual(res.segments, ["all"]);
+    });
+
+    it("cannot add new session with 'all' segment", async () => {
+        const projectId = ObjectID().toString();
+        try {
+            await userSessionController.addUserSession(projectId, {
+                ...mockUserSession("testUser"),
+                segments: ["test", "test1", "test1", "aLl"],
+            });
+            assert.fail();
+        } catch (err) {
+            console.log(err);
+            assert.equal(
+                err.message,
+                'Cannot add "all" as segments since it is a reserved key word',
+            );
+        }
+    });
+
     it("can validate a session", async () => {
         const projectId = ObjectID().toString();
         const res = await userSessionController.addUserSession(

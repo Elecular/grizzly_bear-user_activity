@@ -15,6 +15,12 @@ module.exports.addUserSession = async (projectId, userSession) => {
     if (!projectId || !ObjectID.isValid(projectId)) {
         throw new createError(400, "Invalid Project Id");
     }
+    if (!isSegmentsValid(userSession.segments)) {
+        throw new createError(
+            400,
+            'Cannot add "all" as segments since it is a reserved key word',
+        );
+    }
 
     const db = await mongo.connect();
 
@@ -22,6 +28,7 @@ module.exports.addUserSession = async (projectId, userSession) => {
         const timestamp = userSession.timestamp || Date.now();
         const response = await db.collection("user_session").insertOne({
             ...userSession,
+            segments: [...new Set(userSession.segments), "all"], //TODO: Add "all" segment and return 400 if user sends all as a segment type
             projectId: ObjectID(projectId),
             hourNumber: Math.floor(timestamp / (3600 * 1000)),
             timestamp: Timestamp.fromNumber(timestamp),
@@ -32,6 +39,13 @@ module.exports.addUserSession = async (projectId, userSession) => {
         throw new createError(err.code == 121 ? 400 : 500);
     }
 };
+
+/**
+ *
+ * @param {[String]} segments
+ */
+const isSegmentsValid = segments =>
+    !segments.map(s => s.toLowerCase()).includes("all");
 
 /**
  * Checks if the existing sessionId exists under given project id

@@ -3,7 +3,8 @@ version: '3'
 services:
   spark-batch:
     depends_on:
-      - web
+      - user-activity-web
+      - experiments-web
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -11,13 +12,16 @@ services:
     - ./:/code/
     links:
     - "db:database"
+    - "experiments-web:experiments-web"
     environment:
       MASTER: local
       MONGODB_URL: mongodb://username:password@database:27017
       MONGODB_DATABASE: experiments
+      EXPERIMENTS_DEPLOYMENT_SERVICE_SERVICE_HOST: experiments-web
+      EXPERIMENTS_DEPLOYMENT_SERVICE_SERVICE_PORT: 3000
     command: >
       bash -c "sbt local/reStart && tail -F anything"
-  web:
+  user-activity-web:
     depends_on:
       - db
     build:
@@ -25,6 +29,19 @@ services:
       dockerfile: Dockerfile.dev
     ports:
     - '80:3000'
+    volumes:
+    - /code/node_modules
+    links:
+    - "db:database"
+    environment:
+      MONGODB_URL: mongodb://username:password@database:27017
+      MONGODB_DATABASE: experiments
+  experiments-web:
+    depends_on:
+      - db
+    image: gcr.io/grizzly-bear-271511/grizzly-bear-stage/experiments
+    ports:
+    - '3000:3000'
     volumes:
     - /code/node_modules
     links:
