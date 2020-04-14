@@ -2,47 +2,50 @@
 
 ![Test](https://github.com/nj20/grizzly_bear-user_activity/workflows/Test/badge.svg?branch=master) ![Deploy To GKE](https://github.com/nj20/grizzly_bear-user_activity/workflows/Deploy%20To%20GKE/badge.svg?branch=master)
 
-### Introduction
+---
 
-This service is used for logging user activity and getting aggregated data.
+### Development
 
+#### Web Development
 
-### Workflows
-
-This section will describe how to develop, test and push the application to staging and production
-
-##### Development
-
-* You can run the following command to start the **web service** and start making changes. The service will automatically pickup any changes! 
+You can run the following command to start the **web service** in development mode. The service will automatically pickup any changes! 
   ```
   npm run start:dev
   ```
 
-* You can run the following command to spin up an environment for the **spark batch**
-  ```
-  docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
-  ```
-  Once you have spin up the docker containers, you can attach to the spark container
-  ```
-  docker exec -it batch_spark-batch_1 bash
-  ```
-  Then you can make some changes in your file and run teh batch
-  ```
-  sbt local/run
-  ```
+#### Batch Development
 
+1. You must first install [Google Cloud CLI](https://cloud.google.com/sdk/docs/downloads-versioned-archives)
+2. You must then authenticate docker to use the google cloud registry using the following command
+```
+gcloud auth configure-docker
+```
+3. You can run the following command to spin up an environment for the **spark batch**
+```
+docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+4. Once you have spin up the docker containers, you can attach to the spark container
+```
+docker exec -it batch_spark-batch_1 bash
+```
+5. Then you can make some changes in your file and run the batch
+```
+sbt "local/run BatchName"
+```
 
-##### Testing
+---
+
+#### Testing
 
 ```
 npm test
 ```
 
-##### Pull Request
+#### Pull Request
 
 Once you make your changes, make a pull request and github action will automatically run tests on your branch. Once the pull request gets approval, you can merge the branch with master
 
-##### Deploying On Stage/Prod
+#### Deploying On Stage/Prod
 
 Once the branch is merged, you can run the following commands to deploy the applocation on stage and then on prod.
 
@@ -60,7 +63,7 @@ If the github-auth-token is invalid, the command will return the following respo
 }
 ```
 
-##### Deploy On Any K8s Cluster
+#### Deploy On Any K8s Cluster
 
 ```
 cd kubernetes/overlays/stage
@@ -74,17 +77,23 @@ chmod u+x ./kustomize
 * Note that the images for WEB_DOCKER_IMAGE and BATCH_DOCKER_IMAGE can be found in Dockerfile.web and Dockerfile.batch respsectively
 * You must setup a mongodb service and configure the config and secrets as shown below
 
-###### Config-Map To Configure
+##### Config-Map To Configure
 
 ```
 user-activity-config-map:
   SPARK_CLUSTER_MASTER: <address of master cluster for spark jobs>
 ```
 
-###### Secrets To Configure
+##### Secrets To Configure
 
 ```
 user-activity-db-secret:
   MONGODB_URL: <mongodb_url>
   MONGODB_DATABASE: <database name>
+```
+
+Secrets in a kubernetes cluster can be configured using thsi command
+
+```
+kubectl create secret generic user-activity-db-secret --from-literal=MONGODB_URL=<mongodb_url>--from-literal=MONGODB_DATABASE=<mongodb_database>
 ```

@@ -9,4 +9,33 @@ services:
         --userActions buy,click,view \
         --userVolume 50 --sessionVolume 200 --activityVolume 1000 \
         --minTimestamp 79839129600000 --maxTimestamp 79839302400000"
-      
+  experiments-web:
+    command: >
+      bash -c "sleep 15 && npm start -- \
+        --randomDataDump \
+        --data '[{
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp1\",
+          \"startTime\": \"79839129600000\",
+          \"endTime\": \"79839198720000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp2\",
+          \"startTime\": \"79839233280000\",
+          \"endTime\": \"79839302400000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp3\",
+          \"startTime\": \"79839164160000\",
+          \"endTime\": \"79839267840000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp4\",
+          \"startTime\": \"59839164160000\",
+          \"endTime\": \"59839267840000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498de\",
+          \"experimentName\": \"exp5\",
+          \"startTime\": \"79839164160000\",
+          \"endTime\": \"79839233280000\"
+        }]'"

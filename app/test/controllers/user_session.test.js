@@ -2,6 +2,7 @@ const assert = require("assert");
 const mongo = require("../../db/mongodb");
 const ObjectID = require("mongodb").ObjectID;
 const userSessionController = require("../../controllers/user_session");
+const md5 = require("md5");
 
 beforeEach(async () => {
     const db = await mongo.connect();
@@ -23,7 +24,7 @@ describe("UserSession Controller", () => {
             mockUserSession("testUser"),
         );
         assert.equal(res.projectId, projectId);
-        assert.equal(res.userId, "testUser");
+        assert.equal(res.userId, md5("testUser"));
         assert.ok(Math.abs(res.timestamp - Date.now()) < 10000);
         assert.ok(res.hourNumber);
     });
@@ -55,7 +56,6 @@ describe("UserSession Controller", () => {
             });
             assert.fail();
         } catch (err) {
-            console.log(err);
             assert.equal(
                 err.message,
                 'Cannot add "all" as segments since it is a reserved key word',

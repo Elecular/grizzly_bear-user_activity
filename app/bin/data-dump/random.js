@@ -14,7 +14,7 @@
  * max-timestamp (optional): Maximum timestmap of user session (in milliseconds)
  *
  * Example usage:
-node bin/data-dump/random.js \
+PORT=80 node bin/data-dump/random.js \
     --projects 5e865ed82a2aeb6436f498dc,5e865ed82a2aeb6436f498de,5e865ed82a2aeb6436f498d7,5e865ed82a2aeb6436f498dd \
     --segments one,two,three,four \
     --userVolume 25 \
@@ -47,7 +47,6 @@ for (let count = 0; count < argv.userVolume; count++) {
 //All data that is sent to user-activity service
 const data = [];
 const sessionIds = [];
-console.log(argv.sessionVolume);
 //Sending user sessions to user-activity service
 for (let count = 0; count < argv.sessionVolume; count++) {
     setTimeout(() => {
@@ -63,7 +62,7 @@ for (let count = 0; count < argv.sessionVolume; count++) {
 
         let req = http.request(
             {
-                host: argv.host || "localhost",
+                host: "localhost",
                 port: process.env.PORT || 3000,
                 path: "/user-session",
                 method: "POST",

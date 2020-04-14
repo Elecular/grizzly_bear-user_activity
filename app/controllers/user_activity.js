@@ -8,8 +8,11 @@ const userSessionController = require("../controllers/user_session");
  * Adds a new user activity to the database
  *
  * @param {string} projectId
- * @param {Object} userActivity
- * @returns {Promise<Object>}
+ * @param {{
+    sessionId: String,
+    userAction: String
+ }} userActivity
+ * @returns {Promise<UserActivity>}
  */
 module.exports.addUserActivity = async (projectId, userActivity) => {
     const db = await mongo.connect();

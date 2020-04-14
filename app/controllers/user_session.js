@@ -3,13 +3,17 @@ const ObjectID = require("mongodb").ObjectID;
 const Timestamp = require("mongodb").Timestamp;
 const logger = require("log4js").getLogger();
 const createError = require("http-errors");
+const md5 = require("md5");
 
 /**
  * Adds a new user session to the database
  *
  * @param {string} projectId
- * @param {Object} userSession
- * @returns {Promise<Object>}
+ * @param {{
+    userId: String,
+    segments: Array<String>
+}} userSession
+ * @returns {Promise<UserSession>}
  */
 module.exports.addUserSession = async (projectId, userSession) => {
     if (!projectId || !ObjectID.isValid(projectId)) {
@@ -27,7 +31,7 @@ module.exports.addUserSession = async (projectId, userSession) => {
     try {
         const timestamp = userSession.timestamp || Date.now();
         const response = await db.collection("user_session").insertOne({
-            ...userSession,
+            userId: md5(userSession.userId),
             segments: [...new Set(userSession.segments), "all"], //TODO: Add "all" segment and return 400 if user sends all as a segment type
             projectId: ObjectID(projectId),
             hourNumber: Math.floor(timestamp / (3600 * 1000)),
@@ -42,7 +46,7 @@ module.exports.addUserSession = async (projectId, userSession) => {
 
 /**
  *
- * @param {[String]} segments
+ * @param {Array<String>} segments
  */
 const isSegmentsValid = segments =>
     !segments.map(s => s.toLowerCase()).includes("all");

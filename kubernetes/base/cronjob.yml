@@ -11,6 +11,7 @@ spec:
           containers:
           - name: experiment-stats
             image: BATCH_DOCKER_IMAGE
+            imagePullPolicy: IfNotPresent
             env:
               - name: MONGODB_URL
                 valueFrom:
