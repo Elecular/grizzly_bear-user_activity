@@ -16,9 +16,9 @@ services:
     environment:
       MASTER: local
       MONGODB_URL: mongodb://username:password@database:27017
-      MONGODB_DATABASE: experiments
-      EXPERIMENTS_DEPLOYMENT_SERVICE_SERVICE_HOST: experiments-web
-      EXPERIMENTS_DEPLOYMENT_SERVICE_SERVICE_PORT: 3000
+      MONGODB_DATABASE: user_activity
+      PRIVATE_EXPERIMENTS_SERVICE_HOST: experiments-web
+      PRIVATE_EXPERIMENTS_SERVICE_PORT: 8080
     command: >
       bash -c "sbt local/reStart && tail -F anything"
   user-activity-web:
@@ -39,10 +39,10 @@ services:
   experiments-web:
     depends_on:
       - db
-    image: gcr.io/grizzly-bear-271511/grizzly-bear-stage/experiments
+    image: gcr.io/grizzly-bear-271511/grizzly-bear-stage/experiments:latest
     ports:
-    - '3000:80'
-    - '8080:8080'
+    - '3000:80' # Public API
+    - '8080:8080' # Private API
     volumes:
     - /code/node_modules
     links:

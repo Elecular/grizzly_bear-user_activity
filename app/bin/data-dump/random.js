@@ -112,7 +112,7 @@ const sendUserActivity = () => {
             let req = http.request(
                 {
                     host: argv.host || "localhost",
-                    port: process.env.PORT || 3000,
+                    port: 80,
                     path: "/user-activity",
                     method: "POST",
                     headers: {
