@@ -9,8 +9,8 @@ cd "$(dirname "$0")"
 cd ../..
  
 # Buidling images
-docker build -f Dockerfile.web --tag user-activity-web:dev .
-docker build -f Dockerfile.batch --tag user-activity-batch:dev .
+docker build -f app/Dockerfile --tag user-activity-web:dev app/
+docker build -f batch/Dockerfile --tag user-activity-batch:dev batch/
 
 cd kubernetes/overlays/local
 

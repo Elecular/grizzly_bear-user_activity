@@ -63,7 +63,7 @@ for (let count = 0; count < argv.sessionVolume; count++) {
         let req = http.request(
             {
                 host: "localhost",
-                port: process.env.PORT || 3000,
+                port: 80,
                 path: "/user-session",
                 method: "POST",
                 headers: {

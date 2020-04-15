@@ -19,7 +19,7 @@ spec:
         image: WEB_DOCKER_IMAGE
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 3000
+        - containerPort: 80
         env:
           - name: MONGODB_URL
             valueFrom:

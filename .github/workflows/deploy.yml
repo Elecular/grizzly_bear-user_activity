@@ -60,7 +60,7 @@ jobs:
                     -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/web/"$IMAGE":latest \
                     --build-arg GITHUB_SHA="$GITHUB_SHA" \
                     --build-arg GITHUB_REF="$GITHUB_REF" \
-                    -f Dockerfile.web .
+                    -f app/Dockerfile app/
 
             # Build the Docker image for Batch
             - name: Build Batch Docker Image
@@ -70,7 +70,7 @@ jobs:
                     -t "$REGISTRY_HOSTNAME"/"$GKE_PROJECT"/"$GKE_CLUSTER"/batch/"$IMAGE":latest \
                     --build-arg GITHUB_SHA="$GITHUB_SHA" \
                     --build-arg GITHUB_REF="$GITHUB_REF" \
-                    -f Dockerfile.batch .
+                    -f batch/Dockerfile batch/
 
             # Push the Web Docker image to Google Container Registry
             - name: Publish Web Docker Image

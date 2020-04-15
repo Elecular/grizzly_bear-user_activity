@@ -1,6 +1,6 @@
 FROM node:12.16
 
-COPY /app code
+COPY . code
 WORKDIR /code
 
 ENV NODE_ENV=production

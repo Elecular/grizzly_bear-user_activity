@@ -10,11 +10,7 @@ const http = require('http');
 const db = require('../db/mongodb')
 const argv = require("yargs").argv;
 
-/**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(process.env.PORT || '3000');
+const port = 80;
 app.set('port', port);
 
 /**

@@ -28,7 +28,7 @@ services:
       context: ../app
       dockerfile: Dockerfile.dev
     ports:
-    - '80:3000'
+    - '80:80'
     volumes:
     - /code/node_modules
     links:
@@ -41,7 +41,8 @@ services:
       - db
     image: gcr.io/grizzly-bear-271511/grizzly-bear-stage/experiments
     ports:
-    - '3000:3000'
+    - '3000:80'
+    - '8080:8080'
     volumes:
     - /code/node_modules
     links:

@@ -5,7 +5,7 @@ RUN yum install -y https://dl.bintray.com/sbt/rpm/sbt-1.3.8.rpm
 RUN yum install -y wget
 RUN yum install -y tar
 
-COPY /batch code
+COPY . code
 WORKDIR /code
  
 RUN sbt app/assembly

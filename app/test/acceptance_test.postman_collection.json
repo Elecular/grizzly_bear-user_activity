@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "3021ed37-e723-4527-a2cc-376da512802e",
+        "_postman_id": "3f1fce9f-e617-49ff-bbfe-8bf05510687f",
         "name": "user_activity_acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -47,7 +47,7 @@
                             "",
                             "pm.test(\"Response has user id\", function () {",
                             "    var jsonData = pm.response.json();",
-                            "    pm.expect(jsonData.userId).to.eql(\"testUser\");",
+                            "    pm.expect(jsonData.userId).to.eql(\"33ef37db24f3a27fb520847dcd549e9f\");",
                             "});",
                             "",
                             "",
