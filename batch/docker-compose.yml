@@ -14,7 +14,7 @@ services:
     - "db:database"
     - "experiments-web:experiments-web"
     environment:
-      MASTER: local
+      MASTER: local[*]
       MONGODB_URL: mongodb://username:password@database:27017
       MONGODB_DATABASE: user_activity
       PRIVATE_EXPERIMENTS_SERVICE_HOST: experiments-web
@@ -35,7 +35,7 @@ services:
     - "db:database"
     environment:
       MONGODB_URL: mongodb://username:password@database:27017
-      MONGODB_DATABASE: experiments
+      MONGODB_DATABASE: user_activity
   experiments-web:
     depends_on:
       - db

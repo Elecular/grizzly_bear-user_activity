@@ -1,6 +1,6 @@
 package util
 
-import org.apache.spark.sql.SparkSession;
+import org.apache.spark.sql.SparkSession
 import org.apache.spark.SparkContext
 
 /**
@@ -8,25 +8,22 @@ import org.apache.spark.SparkContext
   */
 object AppSparkSession {
 
-  private val master = sys.env("MASTER");
-  private val appName = "UserActivityProcessor";
+    private val master = sys.env("MASTER");
+    private val appName = "UserActivityProcessor"
 
-  private val spark = SparkSession
+    val spark: SparkSession = SparkSession
     .builder()
     .master(master)
     .config("spark.mongodb.input.database", "")
     .config("spark.mongodb.input.collection", "")
+    .config("spark.mongodb.output.uri", sys.env("MONGODB_URL"))
+    .config("spark.mongodb.output.database", sys.env("MONGODB_DATABASE"))
     .appName(appName)
-    .getOrCreate();
+    .getOrCreate()
 
-  /**
-    * Gets the spark session
-    */
-  def getSpark(): SparkSession = {
-    return spark;
-  }
+    sparkContext.setLogLevel("WARN")
 
-  def getSparkContext(): SparkContext = {
-    return spark.sparkContext;
-  }
+    def sparkContext: SparkContext = {
+        spark.sparkContext
+    }
 }

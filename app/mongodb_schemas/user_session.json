@@ -23,7 +23,7 @@
             "description": "Unix timestamp (in hours). This is basically number of hours since epoch (1970-01-01 UTC)."
         },
         "timestamp": {
-            "bsonType": "timestamp",
+            "bsonType": "number",
             "description": "The unix timestamp (milliseconds) on which this action happened"
         }
     }

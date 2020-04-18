@@ -2,24 +2,22 @@ package util
 
 object BatchProcessor {
 
-  private var batches: Map[String, Batch] = Map();
+    private var batches: Map[String, Batch] = Map();
 
-  def subscribeBatch(name: String, batch: Batch) = {
-    batches += (name -> batch);
-  }
+    def subscribeBatch(name: String, batch: Batch): Unit = {
+        batches += (name -> batch)
+    }
 
-  def processBatch(name: String) = {
-    val batch = batches(name);
-    if (batch == null) throw new Exception(s"$name batch does not exist");
+    def processBatch(name: String): Unit = {
+        val batch = batches(name)
+        if (batch == null) throw new Exception(s"$name batch does not exist");
+        batch.run()
 
-    val dataFrames = batch.getData();
-    if (dataFrames == null)
-      throw new Exception(s"$name batch was not able to extract source data");
+    }
 
-    val result = batch.transform(dataFrames);
-    if (result == null)
-      throw new Exception(s"$name batch was not able to transform data");
-
-    batch.store(result);
-  }
+    def processBatchForTimeRange(name: String, startTime: Long, endTime: Long): Unit = {
+        val batch = batches(name)
+        if (batch == null) throw new Exception(s"$name batch does not exist");
+        batch.execute(startTime, endTime)
+    }
 }

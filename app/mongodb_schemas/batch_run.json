@@ -1,0 +1,30 @@
+{
+    "bsonType": "object",
+    "required": ["batchName", "startTime", "endTime", "success", "timestamp"],
+    "properties": {
+        "batchName": {
+            "bsonType": "string",
+            "description": "Name of the batch"
+        },
+        "startTime": {
+            "bsonType": "long",
+            "description": "The start timestamp of data the needs to be processed. This is NOT the time at which the batch started running. Unix timestamp (milliseconds)."
+        },
+        "endTime": {
+            "bsonType": "long",
+            "description": "The end timestamp of data the needs to be processed. This is NOT the time at which the batch finished running. Unix timestamp (milliseconds)."
+        },
+        "success": {
+            "bsonType": "bool",
+            "description": "The unix timestamp (milliseconds) on which this action happened"
+        },
+        "error": {
+            "bsonType": "string",
+            "description": "If the batch failed, this is the error"
+        },
+        "timestamp": {
+            "bsonType": "long",
+            "description": "The time at which this event was recorded"
+        }
+    }
+}

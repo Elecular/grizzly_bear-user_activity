@@ -1,6 +1,5 @@
 const mongo = require("../db/mongodb");
 const ObjectID = require("mongodb").ObjectID;
-const Timestamp = require("mongodb").Timestamp;
 const logger = require("log4js").getLogger();
 const createError = require("http-errors");
 const userSessionController = require("../controllers/user_session");
@@ -41,7 +40,7 @@ module.exports.addUserActivity = async (projectId, userActivity) => {
         const response = await db.collection("user_activity").insertOne({
             ...userActivity,
             sessionId: ObjectID(userActivity.sessionId),
-            timestamp: Timestamp.fromNumber(Date.now()),
+            timestamp: Date.now(),
         });
         return response.ops[0];
     } catch (err) {

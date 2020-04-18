@@ -1,6 +1,5 @@
 const mongo = require("../db/mongodb");
 const ObjectID = require("mongodb").ObjectID;
-const Timestamp = require("mongodb").Timestamp;
 const logger = require("log4js").getLogger();
 const createError = require("http-errors");
 const md5 = require("md5");
@@ -35,7 +34,7 @@ module.exports.addUserSession = async (projectId, userSession) => {
             segments: [...new Set(userSession.segments), "all"], //TODO: Add "all" segment and return 400 if user sends all as a segment type
             projectId: ObjectID(projectId),
             hourNumber: Math.floor(timestamp / (3600 * 1000)),
-            timestamp: Timestamp.fromNumber(timestamp),
+            timestamp: timestamp,
         });
         return response.ops[0];
     } catch (err) {

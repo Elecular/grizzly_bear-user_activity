@@ -1,54 +1,38 @@
 package experimentStats
 
-import org.apache.spark.sql.DataFrame;
-import com.mongodb.spark.sql.fieldTypes.Timestamp
-import util.Batch
-import util.MongoConnector
-import org.apache.spark.sql.functions.explode
-
-
-case class UserSession(
-    _id: String,
-    hourNumber: Int,
-    projectId: String,
-    segments: Array[String],
-    timestamp: Timestamp,
-    userId: String
-)
-
-case class UserActivity(
-    sessionId: String,
-    userAction: String
-)
+import experimentStats.extractors.{RunningExperimentsExtractor, UserActivityExtractor, UserSessionExtractor}
+import experimentStats.transformers.{ExperimentActivityStats, ExperimentSessionStats, ExperimentSessions}
+import util.{AggregationInterval, Batch}
+import org.apache.spark.sql.functions.col
 
 /**
   * Used for computing hourly results for experiment events
   */
-object HourlyExperimentStats extends Batch("HourlyExperimentStats") {
+object HourlyExperimentStats extends Batch("HourlyExperimentStats", AggregationInterval.Hourly, 3) {
 
-  override def getData(): Map[String, DataFrame] = {
-    ExperimentsExtractor.getRunningExperiments(79839129600000L, 79839302400000L);
-    return Map(
-      "UserSession" -> MongoConnector.loadCollection[UserSession](
-        "user_session"
-      ),
-      "UserActivity" -> MongoConnector.loadCollection[UserActivity](
-        "user_activity"
-      )
-    )
-  }
+    override def execute(startTime: Long, endTime: Long): Unit = {
+        val userSessions = UserSessionExtractor.extract(startTime, endTime)
+        val experiments = RunningExperimentsExtractor.extract(startTime, endTime)
+        //We want all user activities that happened in the next 3 hours
+        val userActivity = UserActivityExtractor.extract(startTime, endTime + (3600 * 1000 * 3))
 
-  override def transform(dataFrames: Map[String, DataFrame]): DataFrame = {
-    //val userSession = dataFrames("UserSession")
-    //val userActivity = dataFrames("UserActivity").groupBy("sessionId","userAction").count();
+        val experimentSessions = ExperimentSessions.transform(Map(
+            "userSessions" ->  userSessions,
+            "experiments" -> experiments
+        ))
 
-    //userSession.
-    //  join(userActivity, userSession("_id") === userActivity("sessionId"), "inner").
-    //  show(20, false);
-    //dataFrames("UserActivity").show(20, false);
-    return null;
-  }
+        experimentSessions.cache
 
-  override def store(dataFrame: DataFrame) = {}
+        val experimentSessionStats = ExperimentSessionStats.transform(Map(
+            "experimentSessions" -> experimentSessions
+        ))
 
+        val experimentActivityStats = ExperimentActivityStats.transform(Map(
+            "experimentSessions" -> experimentSessions,
+            "userActivity" -> userActivity
+        ))
+
+        experimentSessionStats.show(200, false)
+        experimentActivityStats.show(200, false)
+    }
 }
