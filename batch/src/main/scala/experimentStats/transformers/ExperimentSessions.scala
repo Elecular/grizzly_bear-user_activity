@@ -14,18 +14,19 @@ import util.{AppSparkSession, Transformer}
   */
 object ExperimentSessions extends Transformer {
 
-    private val host = sys.env("PRIVATE_EXPERIMENTS_SERVICE_HOST")
-    private val port = sys.env("PRIVATE_EXPERIMENTS_SERVICE_PORT")
+    private var userVariationMapper: IUserVariationMapper = VariationMapper
 
     /**
       * Takes:
       * userSessions
       * experiments
-      *
       */
     override def transform(dataFrames: Map[String, DataFrame]): DataFrame = {
         val userSession = dataFrames("userSessions").withColumnRenamed("_id", "sessionId")
         val experiments = dataFrames("experiments")
+
+        if(userSession.isEmpty || experiments.isEmpty)
+            return AppSparkSession.spark.emptyDataFrame
 
         //Mapping between all user sessions and the experiments they belonged to
         val experimentSessions = userSession
@@ -44,7 +45,7 @@ object ExperimentSessions extends Transformer {
         )
 
         //Calculating the variation each user was assigned to
-        val userVariation = getVariationForUsers(
+        val userVariation = userVariationMapper.getVariationForUser(
             experimentSessions
             .select(
                 col("projectId"),
@@ -56,7 +57,20 @@ object ExperimentSessions extends Transformer {
         .join(userVariation, Seq("projectId", "experimentName", "userId"), "inner")
     }
 
-    private def getVariationForUsers(experimentToUserId: Dataset[Row]): DataFrame = {
+    /**
+      * Sets the user variation mapper. This is used for mocking during testing
+      */
+    def setUserVariationMapper(variationMapper: IUserVariationMapper): Unit = {
+        userVariationMapper = variationMapper
+    }
+}
+
+object VariationMapper extends IUserVariationMapper {
+
+    private val host = sys.env("PRIVATE_EXPERIMENTS_SERVICE_HOST")
+    private val port = sys.env("PRIVATE_EXPERIMENTS_SERVICE_PORT")
+
+    override def getVariationForUser(experimentToUserId: Dataset[Row]): DataFrame = {
         val variationSessions = Http(s"http://$host:$port/experiment/variations")
         .postData(experimentToUserId.toJSON.collect().mkString("[",",","]"))
         .header("Content-type", "application/json")

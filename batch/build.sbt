@@ -8,7 +8,8 @@ lazy val app = (project in file(".")).
             "org.mongodb.spark" %% "mongo-spark-connector" % "2.4.1",
             "org.scalaj" %% "scalaj-http" % "2.4.2",
             "org.apache.spark" %% "spark-core" % "2.4.5" % "provided",
-            "org.apache.spark" %% "spark-sql" % "2.4.5" % "provided"
+            "org.apache.spark" %% "spark-sql" % "2.4.5" % "provided",
+            "org.scalatest" %% "scalatest" % "3.1.1" % "test"
         )
     )
 

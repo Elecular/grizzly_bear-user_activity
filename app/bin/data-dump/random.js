@@ -108,6 +108,12 @@ const sendUserActivity = () => {
     for (let count = 0; count < argv.activityVolume; count++) {
         let session = getRandomElement(sessionIds);
         let userAction = getRandomElement(userActions);
+        let timestamp = undefined;
+        if (argv.minTimestamp && argv.maxTimestamp)
+            timestamp =
+                Math.floor(
+                    Math.random() * (argv.maxTimestamp - argv.minTimestamp + 1),
+                ) + argv.minTimestamp;
         setTimeout(() => {
             let req = http.request(
                 {
@@ -132,6 +138,7 @@ const sendUserActivity = () => {
                 JSON.stringify({
                     sessionId: session.sessionId,
                     userAction: userAction,
+                    timestamp,
                 }),
             );
             req.end();

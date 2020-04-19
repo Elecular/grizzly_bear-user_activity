@@ -32,7 +32,7 @@ object HourlyExperimentStats extends Batch("HourlyExperimentStats", AggregationI
             "userActivity" -> userActivity
         ))
 
-        experimentSessionStats.show(200, false)
-        experimentActivityStats.show(200, false)
+        // TODO: Load data frames to Mongodb
+        //TODO: Make sha256 id
     }
 }

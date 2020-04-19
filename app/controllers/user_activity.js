@@ -9,8 +9,10 @@ const userSessionController = require("../controllers/user_session");
  * @param {string} projectId
  * @param {{
     sessionId: String,
-    userAction: String
+    userAction: String,
+    timestamp: [number]
  }} userActivity
+ * @param {number} timestamp 
  * @returns {Promise<UserActivity>}
  */
 module.exports.addUserActivity = async (projectId, userActivity) => {
@@ -40,7 +42,7 @@ module.exports.addUserActivity = async (projectId, userActivity) => {
         const response = await db.collection("user_activity").insertOne({
             ...userActivity,
             sessionId: ObjectID(userActivity.sessionId),
-            timestamp: Date.now(),
+            timestamp: userActivity.timestamp || Date.now(),
         });
         return response.ops[0];
     } catch (err) {
