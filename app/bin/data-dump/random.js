@@ -43,6 +43,7 @@ for (let count = 0; count < argv.userVolume; count++) {
             .substring(2, 25),
     );
 }
+const environments = ["stage", "prod"];
 
 //All data that is sent to user-activity service
 const data = [];
@@ -53,6 +54,7 @@ for (let count = 0; count < argv.sessionVolume; count++) {
         let projectId = getRandomElement(projects);
         let userId = getRandomElement(users);
         let selectedSegments = getRandomElements(segments);
+        let environment = getRandomElement(environments);
         let timestamp = undefined;
         if (argv.minTimestamp && argv.maxTimestamp)
             timestamp =
@@ -79,6 +81,7 @@ for (let count = 0; count < argv.sessionVolume; count++) {
                 userId: userId,
                 segments: selectedSegments,
                 ...(timestamp && { timestamp }),
+                environment,
             }),
         );
         req.end();
@@ -109,6 +112,7 @@ const sendUserActivity = () => {
         let session = getRandomElement(sessionIds);
         let userAction = getRandomElement(userActions);
         let timestamp = undefined;
+        let amount = Math.random() * 50;
         if (argv.minTimestamp && argv.maxTimestamp)
             timestamp =
                 Math.floor(
@@ -139,6 +143,7 @@ const sendUserActivity = () => {
                     sessionId: session.sessionId,
                     userAction: userAction,
                     timestamp,
+                    amount,
                 }),
             );
             req.end();

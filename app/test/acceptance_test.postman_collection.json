@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "3f1fce9f-e617-49ff-bbfe-8bf05510687f",
+        "_postman_id": "9e10b770-7f0a-4cb6-802e-e1c95c88ef70",
         "name": "user_activity_acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -68,7 +68,7 @@
                 ],
                 "body": {
                     "mode": "raw",
-                    "raw": "{\n\t\"userId\": \"testUser\",\n\t\"segments\": [\"female\", \"german\"]\n}",
+                    "raw": "{\n\t\"userId\": \"testUser\",\n\t\"segments\": [\"female\", \"german\"],\n\t\"environment\": \"prod\"\n}",
                     "options": {
                         "raw": {
                             "language": "json"
@@ -174,7 +174,7 @@
                 ],
                 "body": {
                     "mode": "raw",
-                    "raw": "{\n\t\"sessionId\": \"{{sampleSessionId}}\",\n\t\"userAction\": \"testAction\"\n}",
+                    "raw": "{\n\t\"sessionId\": \"{{sampleSessionId}}\",\n\t\"userAction\": \"testAction\",\n\t\"amount\": 43\n}",
                     "options": {
                         "raw": {
                             "language": "json"

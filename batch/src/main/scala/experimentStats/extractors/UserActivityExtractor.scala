@@ -13,4 +13,4 @@ object UserActivityExtractor extends Extractor{
     }
 }
 
-case class UserActivity(sessionId: String, userAction: String, timestamp: Long)
+case class UserActivity(sessionId: String, userAction: String, timestamp: Long, amount: Double)

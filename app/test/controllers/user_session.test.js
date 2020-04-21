@@ -25,6 +25,7 @@ describe("UserSession Controller", () => {
         );
         assert.equal(res.projectId, projectId);
         assert.equal(res.userId, md5("testUser"));
+        assert.equal(res.environment, "prod");
         assert.ok(Math.abs(res.timestamp - Date.now()) < 10000);
         assert.ok(res.hourNumber);
     });
@@ -63,6 +64,20 @@ describe("UserSession Controller", () => {
         }
     });
 
+    it("cannot add new session without enviornment", async () => {
+        const projectId = ObjectID().toString();
+        try {
+            await userSessionController.addUserSession(projectId, {
+                ...mockUserSession("testUser"),
+                segments: ["test", "test1", "test1"],
+                environment: undefined,
+            });
+            assert.fail();
+        } catch (err) {
+            assert.equal(err.message, "Please specify an environment");
+        }
+    });
+
     it("can validate a session", async () => {
         const projectId = ObjectID().toString();
         const res = await userSessionController.addUserSession(
@@ -93,5 +108,6 @@ const mockUserSession = userId => {
     return {
         userId,
         segments: ["male", "female"],
+        environment: "prod",
     };
 };

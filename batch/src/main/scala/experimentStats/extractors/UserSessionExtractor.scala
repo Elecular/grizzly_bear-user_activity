@@ -21,4 +21,5 @@ case class UserSession(_id: String,
                        projectId: String,
                        segments: Array[String],
                        timestamp: Long,
-                       userId: String)
+                       userId: String,
+                       environment: String)

@@ -1,6 +1,13 @@
 {
     "bsonType": "object",
-    "required": ["userId", "projectId", "segments", "hourNumber", "timestamp"],
+    "required": [
+        "userId",
+        "projectId",
+        "segments",
+        "hourNumber",
+        "timestamp",
+        "environment"
+    ],
     "properties": {
         "userId": {
             "bsonType": "string",
@@ -25,6 +32,10 @@
         "timestamp": {
             "bsonType": "number",
             "description": "The unix timestamp (milliseconds) on which this action happened"
+        },
+        "environment": {
+            "bsonType": "string",
+            "description": "The environment could be dev/stage/prod or any user defined environment"
         }
     }
 }

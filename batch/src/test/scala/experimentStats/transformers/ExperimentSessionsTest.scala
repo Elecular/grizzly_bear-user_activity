@@ -8,15 +8,18 @@ class ExperimentSessionsTest extends AnyFunSuite {
 
     test("Can map users to experiments") {
         val userSessions = Seq(
-            ("session_id_1", "project_id_1", "user_id_1", ("all", "one", "three"), 1700L, 10),
-            ("session_id_2", "project_id_1", "user_id_2", ("all", "one", "three"), 2300L, 10),
-            ("session_id_3", "project_id_1", "user_id_3", ("all", "one", "three"), 10000L, 10),
-            ("session_id_4", "project_id_2", "user_id_1", ("all", "one", "three"), 4000L, 10),
-            ("session_id_5", "project_id_2", "user_id_2", ("all", "one", "three"), 15000L, 10),
-            ("session_id_6", "project_id_2", "user_id_3", ("all", "one", "three"), 17000L, 10),
-            ("session_id_7", "project_id_2", "user_id_3", ("all", "one", "three"), 18000L, 10),
-            ("session_id_8", "project_id_2", "user_id_4", ("all", "one", "three"), 25000L, 10)
-        ).toDF("_id", "projectId", "userId",  "segments", "timestamp", "hourNumber")
+            ("session_id_1", "project_id_1", "prod", "user_id_1", Array("all", "one", "three"), 1700L, 10),
+            ("session_id_2", "project_id_1", "prod", "user_id_2", Array("all", "one", "three"), 2300L, 10),
+            ("session_id_3", "project_id_1", "prod", "user_id_3", Array("all", "one", "three"), 10000L, 10),
+            ("session_id_4", "project_id_2", "prod", "user_id_1", Array("all", "one", "three"), 4000L, 10),
+            ("session_id_5", "project_id_2", "prod", "user_id_2", Array("all", "one", "three"), 15000L, 10),
+            ("session_id_6", "project_id_2", "prod", "user_id_3", Array("all", "one", "three"), 17000L, 10),
+            ("session_id_7", "project_id_2", "prod", "user_id_3", Array("all", "one", "three"), 18000L, 10),
+            ("session_id_8", "project_id_2", "prod", "user_id_4", Array("all", "one", "three"), 25000L, 10),
+            ("session_id_stage_1", "project_id_1", "stage", "user_id_1", Array("all", "one", "three"), 1700L, 10),
+            ("session_id_stage_2", "project_id_1", "stage", "user_id_2", Array("all", "one", "three"), 2300L, 10),
+            ("session_id_stage_3", "project_id_1", "stage", "user_id_3", Array("all", "one", "three"), 10000L, 10)
+        ).toDF("_id", "projectId", "environment", "userId",  "segments", "timestamp", "hourNumber")
 
         val experiments = Seq(
             ("project_id_1", "exp_1", 1000L, 2000L),
@@ -44,14 +47,17 @@ class ExperimentSessionsTest extends AnyFunSuite {
         ))
 
         val expected = Seq(
-            ("project_id_1", "user_id_1", "exp_1", "variation1", "session_id_1", 10, ("all", "one", "three")),
-            ("project_id_1", "user_id_1", "exp_2", "variation2", "session_id_1", 10, ("all", "one", "three")),
-            ("project_id_1", "user_id_2", "exp_2", "variation1", "session_id_2", 10, ("all", "one", "three")),
-            ("project_id_2", "user_id_1", "exp_1", "variation2", "session_id_4", 10, ("all", "one", "three")),
-            ("project_id_2", "user_id_2", "exp_2", "variation2", "session_id_5", 10, ("all", "one", "three")),
-            ("project_id_2", "user_id_3", "exp_2", "variation1", "session_id_6", 10, ("all", "one", "three")),
-            ("project_id_2", "user_id_3", "exp_2", "variation1", "session_id_7", 10, ("all", "one", "three"))
-        ).toDF("projectId", "userId", "experimentName", "variation", "sessionId", "hourNumber", "segments")
+            ("project_id_1", "prod", "user_id_1", "exp_1", "variation1", "session_id_1", 10, Array("all", "one", "three")),
+            ("project_id_1", "prod", "user_id_1", "exp_2", "variation2", "session_id_1", 10, Array("all", "one", "three")),
+            ("project_id_1", "prod", "user_id_2", "exp_2", "variation1", "session_id_2", 10, Array("all", "one", "three")),
+            ("project_id_2", "prod", "user_id_1", "exp_1", "variation2", "session_id_4", 10, Array("all", "one", "three")),
+            ("project_id_2", "prod", "user_id_2", "exp_2", "variation2", "session_id_5", 10, Array("all", "one", "three")),
+            ("project_id_2", "prod", "user_id_3", "exp_2", "variation1", "session_id_6", 10, Array("all", "one", "three")),
+            ("project_id_2", "prod", "user_id_3", "exp_2", "variation1", "session_id_7", 10, Array("all", "one", "three")),
+            ("project_id_1", "stage", "user_id_1", "exp_1", "variation1", "session_id_stage_1", 10, Array("all", "one", "three")),
+            ("project_id_1", "stage", "user_id_1", "exp_2", "variation2", "session_id_stage_1", 10, Array("all", "one", "three")),
+            ("project_id_1", "stage", "user_id_2", "exp_2", "variation1", "session_id_stage_2", 10, Array("all", "one", "three"))
+        ).toDF("projectId", "environment", "userId", "experimentName", "variation", "sessionId", "hourNumber", "segments")
 
         assert(result.count() == expected.count())
         assert(
@@ -61,7 +67,7 @@ class ExperimentSessionsTest extends AnyFunSuite {
                 Seq("projectId", "userId", "experimentName", "variation", "sessionId")
             ).count() == expected.count()
         )
-        assertDataFramesAreEqual(expected, result, Array("projectId", "userId", "experimentName", "variation", "sessionId"))
+        assertDataFramesAreEqual(expected, result, Array("projectId", "userId", "experimentName", "variation", "sessionId", "environment"))
     }
 
     test("Cannot map users when there are no user sessions") {
@@ -109,10 +115,11 @@ class ExperimentSessionsTest extends AnyFunSuite {
     }
 
     def assertDataFramesAreEqual(a: DataFrame, b: DataFrame, cols: Array[String]): Unit = {
-        val aPrime = a.select(cols.head, cols.tail: _*).groupBy().count()
-        val bPrime = b.select(cols.head, cols.tail: _*).groupBy().count()
+        val aPrime = a.select(cols.head, cols.tail: _*).groupBy(cols.head, cols.tail: _*).count()
+        val bPrime = b.select(cols.head, cols.tail: _*).groupBy(cols.head, cols.tail: _*).count()
 
-        assert(aPrime.except(bPrime).count() == bPrime.except(aPrime).count())
+        assert(bPrime.except(aPrime).count() == 0)
+        assert(aPrime.except(bPrime).count() == 0)
     }
 
 }

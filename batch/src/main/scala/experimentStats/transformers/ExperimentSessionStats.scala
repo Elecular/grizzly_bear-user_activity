@@ -1,7 +1,7 @@
 package experimentStats.transformers
 
 import org.apache.spark.sql.DataFrame
-import util.Transformer
+import util.{AppSparkSession, Transformer}
 import org.apache.spark.sql.functions._
 
 /**
@@ -13,9 +13,13 @@ object ExperimentSessionStats extends Transformer {
     override def transform(dataFrames: Map[String, DataFrame]): DataFrame = {
         val experimentSessions = dataFrames("experimentSessions")
 
+        if(experimentSessions.isEmpty)
+            return AppSparkSession.spark.emptyDataFrame
+
         experimentSessions
         .select(
             col("projectId"),
+            col("environment"),
             col("experimentName"),
             col("variation"),
             col("hourNumber"),
@@ -23,12 +27,21 @@ object ExperimentSessionStats extends Transformer {
         )
         .groupBy(
             col("projectId"),
+            col("environment"),
             col("experimentName"),
             col("variation"),
             col("segment"),
             col("hourNumber")
         )
         .count()
+        .withColumn("_id", sha2(concat(
+            col("projectId"),
+            col("environment"),
+            col("experimentName"),
+            col("variation"),
+            col("segment"),
+            col("hourNumber")
+        ), 256))
         .withColumn("dayNumber", floor(col("hourNumber")/24))
     }
 }

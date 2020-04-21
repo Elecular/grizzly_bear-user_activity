@@ -28,7 +28,11 @@ describe("UserActivity Controller", () => {
         const res = await userActivityController.addUserActivity(projectId, {
             sessionId: session._id,
             userAction: "testAction",
+            amount: 34,
         });
+        assert.ok(res.sessionId, session._id);
+        assert.ok(res.userAction, "testAction");
+        assert.ok(res.amount, 34);
         assert.ok(res);
     });
 
@@ -37,6 +41,7 @@ describe("UserActivity Controller", () => {
             await userActivityController.addUserActivity(projectId, {
                 sessionId: ObjectID().toString(),
                 userAction: "testAction",
+                amount: 34,
             });
             assert.fail();
         } catch (err) {
@@ -46,11 +51,24 @@ describe("UserActivity Controller", () => {
             );
         }
     });
+
+    it("cannot add user activity without amount", async () => {
+        try {
+            await userActivityController.addUserActivity(projectId, {
+                sessionId: session._id,
+                userAction: "testAction",
+            });
+            assert.fail();
+        } catch (err) {
+            assert.equal(err.message, "Please specify amount");
+        }
+    });
 });
 
 const mockUserSession = userId => {
     return {
         userId,
         segments: ["male", "female"],
+        environment: "prod",
     };
 };

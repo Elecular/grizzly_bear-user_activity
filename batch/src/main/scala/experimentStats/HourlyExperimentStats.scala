@@ -2,7 +2,7 @@ package experimentStats
 
 import experimentStats.extractors.{RunningExperimentsExtractor, UserActivityExtractor, UserSessionExtractor}
 import experimentStats.transformers.{ExperimentActivityStats, ExperimentSessionStats, ExperimentSessions}
-import util.{AggregationInterval, Batch}
+import util.{AggregationInterval, Batch, MongoConnector}
 import org.apache.spark.sql.functions.col
 
 /**
@@ -32,7 +32,7 @@ object HourlyExperimentStats extends Batch("HourlyExperimentStats", AggregationI
             "userActivity" -> userActivity
         ))
 
-        // TODO: Load data frames to Mongodb
-        //TODO: Make sha256 id
+        MongoConnector.writeToCollection("experiment_session_stats", experimentSessionStats);
+        MongoConnector.writeToCollection("experiment_activity_stats", experimentActivityStats)
     }
 }

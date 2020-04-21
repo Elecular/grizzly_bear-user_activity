@@ -10,6 +10,7 @@ const md5 = require("md5");
  * @param {string} projectId
  * @param {{
     userId: String,
+    environment: String,
     segments: Array<String>
 }} userSession
  * @returns {Promise<UserSession>}
@@ -24,6 +25,8 @@ module.exports.addUserSession = async (projectId, userSession) => {
             'Cannot add "all" as segments since it is a reserved key word',
         );
     }
+    if (!userSession.environment)
+        throw new createError(400, "Please specify an environment");
 
     const db = await mongo.connect();
 
@@ -31,6 +34,7 @@ module.exports.addUserSession = async (projectId, userSession) => {
         const timestamp = userSession.timestamp || Date.now();
         const response = await db.collection("user_session").insertOne({
             userId: md5(userSession.userId),
+            environment: userSession.environment,
             segments: [...new Set(userSession.segments), "all"], //TODO: Add "all" segment and return 400 if user sends all as a segment type
             projectId: ObjectID(projectId),
             hourNumber: Math.floor(timestamp / (3600 * 1000)),

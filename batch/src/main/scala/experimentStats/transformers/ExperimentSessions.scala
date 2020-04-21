@@ -1,5 +1,6 @@
 package experimentStats.transformers
 
+import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, Row}
 import org.apache.spark.sql.functions.col
 import org.json4s.JString
@@ -38,6 +39,7 @@ object ExperimentSessions extends Transformer {
         .select(
             col("sessionId"),
             col("projectId"),
+            col("environment"),
             col("experimentName"),
             col("userId"),
             col("hourNumber"),
@@ -69,27 +71,34 @@ object VariationMapper extends IUserVariationMapper {
 
     private val host = sys.env("PRIVATE_EXPERIMENTS_SERVICE_HOST")
     private val port = sys.env("PRIVATE_EXPERIMENTS_SERVICE_PORT")
+    private val batchSize = 100
 
     override def getVariationForUser(experimentToUserId: Dataset[Row]): DataFrame = {
-        val variationSessions = Http(s"http://$host:$port/experiment/variations")
-        .postData(experimentToUserId.toJSON.collect().mkString("[",",","]"))
-        .header("Content-type", "application/json")
-        .asString
 
-        val parsedVariationSessions = JsonMethods.parse(variationSessions.body).asInstanceOf[JArray].arr
-        val variationSessionsRDD = AppSparkSession.sparkContext.parallelize(parsedVariationSessions)
+        val batches = experimentToUserId.randomSplit(Array.fill(experimentToUserId.count().toInt/batchSize)(0.1))
 
-        AppSparkSession.spark
-        .createDataFrame(
-            variationSessionsRDD.map[UserVariation](
+        var result: RDD[UserVariation] = AppSparkSession.sparkContext.emptyRDD
+
+        batches.foreach(batch => {
+            val variationSessions = Http(s"http://$host:$port/experiment/variations")
+            .postData(batch.toJSON.collect().mkString("[",",","]"))
+            .header("Content-type", "application/json")
+            .asString
+
+            val parsedVariationSessions = JsonMethods.parse(variationSessions.body).asInstanceOf[JArray].arr
+            val variationSessionsRDD = AppSparkSession.sparkContext.parallelize(parsedVariationSessions)
+
+            result = result.union(variationSessionsRDD.map[UserVariation](
                 value => UserVariation(
                     projectId = (value \ "projectId").asInstanceOf[JString].values,
                     experimentName = (value \ "experimentName").asInstanceOf[JString].values,
                     userId = (value \ "userId").asInstanceOf[JString].values,
                     variation = (value \ "variation").asInstanceOf[JString].values
                 )
-            )
-        )
+            ))
+        })
+
+        AppSparkSession.spark.createDataFrame(result)
     }
 }
 

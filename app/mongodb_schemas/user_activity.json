@@ -1,6 +1,6 @@
 {
     "bsonType": "object",
-    "required": ["sessionId", "userAction"],
+    "required": ["sessionId", "userAction", "amount"],
     "properties": {
         "sessionId": {
             "bsonType": "objectId",
@@ -13,6 +13,10 @@
         "timestamp": {
             "bsonType": "number",
             "description": "The unix timestamp (milliseconds) on which this action happened"
+        },
+        "amount": {
+            "bsonType": "number",
+            "description": "Magnitude of this event. For example, if this is a purchase event, the amount is the money spent on the purchase"
         }
     }
 }

@@ -10,6 +10,7 @@ const userSessionController = require("../controllers/user_session");
  * @param {{
     sessionId: String,
     userAction: String,
+    amount: number,
     timestamp: [number]
  }} userActivity
  * @param {number} timestamp 
@@ -37,6 +38,9 @@ module.exports.addUserActivity = async (projectId, userActivity) => {
             "Session Id is not present in given Project Id",
         );
     }
+
+    if (!userActivity.amount)
+        throw new createError(400, "Please specify amount");
 
     try {
         const response = await db.collection("user_activity").insertOne({
