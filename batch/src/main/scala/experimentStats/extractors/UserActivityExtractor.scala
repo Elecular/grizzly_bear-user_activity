@@ -6,7 +6,7 @@ import util.{Extractor, MongoConnector}
 
 object UserActivityExtractor extends Extractor{
 
-    override def extract(startTime: Long, endTime: Long): DataFrame = {
+    def extract(startTime: Long, endTime: Long): DataFrame = {
         MongoConnector
         .loadCollection[UserActivity]("user_activity")
         .filter(col("timestamp") >= startTime && col("timestamp") <= endTime)

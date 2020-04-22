@@ -2,7 +2,7 @@ package util
 
 import org.apache.spark.sql.DataFrame
 
-abstract class Extractor {
+trait Extractor {
 
     /**
       * Implement extraction of Data frames from data stores

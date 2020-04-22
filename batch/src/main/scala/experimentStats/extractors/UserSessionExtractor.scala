@@ -9,7 +9,7 @@ object UserSessionExtractor extends Extractor{
     /**
       * Gets all user session within given time range
       */
-    override def extract(startTime: Long, endTime: Long): DataFrame = {
+    def extract(startTime: Long, endTime: Long): DataFrame = {
         MongoConnector
         .loadCollection[UserSession]("user_session")
         .filter(col("timestamp") >= startTime && col("timestamp") <= endTime)

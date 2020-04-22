@@ -2,7 +2,7 @@ package util
 
 import org.apache.spark.sql.DataFrame
 
-abstract class Loader {
+trait Loader {
 
     /**
       * Implement loading of data to a destination data store

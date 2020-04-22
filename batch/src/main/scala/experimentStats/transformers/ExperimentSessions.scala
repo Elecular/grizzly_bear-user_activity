@@ -7,7 +7,7 @@ import org.json4s.JString
 import org.json4s.JsonAST.JArray
 import org.json4s.jackson.JsonMethods
 import scalaj.http.Http
-import util.{AppSparkSession, Transformer}
+import util.{AppSparkSession, IHttpReq, Transformer, HttpReq}
 
 /**
   * This transformer takes a Data frame of User Session and another Data frame of Experiments.
@@ -71,34 +71,45 @@ object VariationMapper extends IUserVariationMapper {
 
     private val host = sys.env("PRIVATE_EXPERIMENTS_SERVICE_HOST")
     private val port = sys.env("PRIVATE_EXPERIMENTS_SERVICE_PORT")
-    private val batchSize = 100
+    private var batchSize = 100
+    private var http: IHttpReq = new HttpReq()
 
-    override def getVariationForUser(experimentToUserId: Dataset[Row]): DataFrame = {
+    def getVariationForUser(experimentToUserId: Dataset[Row]): DataFrame = {
 
-        val batches = experimentToUserId.randomSplit(Array.fill(experimentToUserId.count().toInt/batchSize)(0.1))
+        val numberOfBatches = 1 + (experimentToUserId.count().toInt/batchSize)
+        val batches = experimentToUserId.randomSplit(Array.fill(numberOfBatches)(0.1))
 
         var result: RDD[UserVariation] = AppSparkSession.sparkContext.emptyRDD
 
         batches.foreach(batch => {
-            val variationSessions = Http(s"http://$host:$port/experiment/variations")
-            .postData(batch.toJSON.collect().mkString("[",",","]"))
-            .header("Content-type", "application/json")
-            .asString
+            val variationSessions = http.request(
+                s"http://$host:$port/experiment/variations",
+                batch.toJSON.collect().mkString("[",",","]")
+            )
 
-            val parsedVariationSessions = JsonMethods.parse(variationSessions.body).asInstanceOf[JArray].arr
-            val variationSessionsRDD = AppSparkSession.sparkContext.parallelize(parsedVariationSessions)
-
-            result = result.union(variationSessionsRDD.map[UserVariation](
-                value => UserVariation(
-                    projectId = (value \ "projectId").asInstanceOf[JString].values,
-                    experimentName = (value \ "experimentName").asInstanceOf[JString].values,
-                    userId = (value \ "userId").asInstanceOf[JString].values,
-                    variation = (value \ "variation").asInstanceOf[JString].values
-                )
-            ))
+            if(variationSessions != null){
+                val parsedVariationSessions = JsonMethods.parse(variationSessions).asInstanceOf[JArray].arr
+                val variationSessionsRDD = AppSparkSession.sparkContext.parallelize(parsedVariationSessions)
+                result = result.union(variationSessionsRDD.map[UserVariation](
+                    value => UserVariation(
+                        projectId = (value \ "projectId").asInstanceOf[JString].values,
+                        experimentName = (value \ "experimentName").asInstanceOf[JString].values,
+                        userId = (value \ "userId").asInstanceOf[JString].values,
+                        variation = (value \ "variation").asInstanceOf[JString].values
+                    )
+                ))
+            }
         })
 
         AppSparkSession.spark.createDataFrame(result)
+    }
+
+    def setHttp(http: IHttpReq): Unit = {
+        this.http = http
+    }
+
+    def setBatchSize(batchSize: Int): Unit = {
+        this.batchSize = batchSize
     }
 }
 

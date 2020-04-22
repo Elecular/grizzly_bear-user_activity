@@ -6,7 +6,7 @@ import org.apache.spark.sql.{DataFrame, Dataset, Row}
   * This class is used for getting the variations assigned to a user.
   * This is used in ExperimentSessions to map user to variations
   */
-abstract class IUserVariationMapper {
+trait IUserVariationMapper {
 
     /**
       * This method takes a dataset of

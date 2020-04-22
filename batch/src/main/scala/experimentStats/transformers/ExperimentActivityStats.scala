@@ -10,7 +10,7 @@ import org.apache.spark.sql.functions._
 object ExperimentActivityStats extends Transformer {
 
 
-    override def transform(dataFrames: Map[String, DataFrame]): DataFrame = {
+    def transform(dataFrames: Map[String, DataFrame]): DataFrame = {
         val experimentSessions = dataFrames("experimentSessions")
         val userActivity = dataFrames("userActivity")
 

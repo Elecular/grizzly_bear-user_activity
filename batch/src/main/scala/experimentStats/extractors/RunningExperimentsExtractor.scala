@@ -12,7 +12,7 @@ object RunningExperimentsExtractor extends Extractor {
     private val host = sys.env("PRIVATE_EXPERIMENTS_SERVICE_HOST")
     private val port = sys.env("PRIVATE_EXPERIMENTS_SERVICE_PORT")
 
-    override def extract(startTime: Long, endTime: Long): DataFrame = {
+    def extract(startTime: Long, endTime: Long): DataFrame = {
         val experiments = Http(s"http://$host:$port/experiment/timerange/$startTime/$endTime").asString
         val parsedExperiments = JsonMethods.parse(experiments.body).asInstanceOf[JArray].arr
         val experimentsRDD = AppSparkSession.sparkContext.parallelize(parsedExperiments)

@@ -2,7 +2,7 @@ package util
 
 import org.apache.spark.sql.DataFrame
 
-abstract class Transformer {
+trait Transformer {
 
     /**
       * Implement logic for transforming

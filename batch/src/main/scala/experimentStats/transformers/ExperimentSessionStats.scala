@@ -9,9 +9,8 @@ import org.apache.spark.sql.functions._
   */
 object ExperimentSessionStats extends Transformer {
 
-
-    override def transform(dataFrames: Map[String, DataFrame]): DataFrame = {
-        val experimentSessions = dataFrames("experimentSessions")
+    def transform(dataFrames: Map[String, DataFrame]): DataFrame = {
+        val experimentSessions: DataFrame = dataFrames("experimentSessions")
 
         if(experimentSessions.isEmpty)
             return AppSparkSession.spark.emptyDataFrame

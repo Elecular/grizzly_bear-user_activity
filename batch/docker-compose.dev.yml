@@ -7,11 +7,11 @@ services:
         --projects 5e865ed82a2aeb6436f498dc,5e865ed82a2aeb6436f498de,5e865ed82a2aeb6436f498d7,5e865ed82a2aeb6436f498dd \
         --segments one,two,three,four \
         --userActions buy,click,view \
-        --userVolume 1000 --sessionVolume 5000 --activityVolume 8000 \
+        --userVolume 50 --sessionVolume 200 --activityVolume 1000 \
         --minTimestamp 79839129600000 --maxTimestamp 79839302400000"
   experiments-web:
     command: >
-      bash -c "sleep 35 && npm start -- \
+      bash -c "sleep 15 && npm start -- \
         --randomDataDump \
         --data '[{
           \"projectId\": \"5e865ed82a2aeb6436f498dc\",

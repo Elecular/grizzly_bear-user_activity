@@ -1,7 +1,9 @@
 package experimentStats.transformers
-import org.apache.spark.sql.{Column, DataFrame, Dataset, Row}
+import org.apache.spark.sql.{DataFrame, Dataset, Row}
+import org.json4s.JsonAST.{JObject, JString}
+import org.json4s.jackson.JsonMethods
 import org.scalatest.funsuite.AnyFunSuite
-import util.AppSparkSession
+import util.{AppSparkSession, IHttpReq}
 import util.AppSparkSession.spark.implicits._
 
 class ExperimentSessionsTest extends AnyFunSuite {
@@ -29,17 +31,22 @@ class ExperimentSessionsTest extends AnyFunSuite {
             ("project_id_2", "exp_2", 10000L, 20000L)
         ).toDF("projectId", "experimentName", "startTime", "endTime")
 
-        MockUserVariationMapper.setVariationMapping(
-            Seq(
-                ("project_id_1", "exp_1", "user_id_1", "variation1"),
-                ("project_id_1", "exp_2", "user_id_1", "variation2"),
-                ("project_id_1", "exp_2", "user_id_2", "variation1"),
-                ("project_id_2", "exp_1", "user_id_1", "variation2"),
-                ("project_id_2", "exp_2", "user_id_2", "variation2"),
-                ("project_id_2", "exp_2", "user_id_3", "variation1")
-            ).toDF("projectId", "experimentName", "userId", "variation")
-        )
-        ExperimentSessions.setUserVariationMapper(MockUserVariationMapper)
+        //Mocking response from experiments service
+        val mockRes1 = Seq(
+            ("project_id_2", "exp_2", "user_id_2", "variation2"),
+            ("project_id_2", "exp_2", "user_id_3", "variation1")
+        ).toDF("projectId", "experimentName", "userId", "variation").toJSON.collect.mkString("[",",","]")
+
+        val mockRes2 = Seq(
+            ("project_id_1", "exp_1", "user_id_1", "variation1"),
+            ("project_id_1", "exp_2", "user_id_1", "variation2"),
+            ("project_id_1", "exp_2", "user_id_2", "variation1"),
+            ("project_id_2", "exp_1", "user_id_1", "variation2")
+        ).toDF("projectId", "experimentName", "userId", "variation").toJSON.collect.mkString("[",",","]")
+
+        MockHttpReq.setMockResponse(Array(mockRes1, mockRes2) ++ Array.fill(30)(null))
+        VariationMapper.setBatchSize(2)
+        VariationMapper.setHttp(MockHttpReq)
 
         val result = ExperimentSessions.transform(Map(
             "userSessions" -> userSessions,
@@ -140,11 +147,28 @@ object MockUserVariationMapper extends IUserVariationMapper {
       * variationName
       * It returns the variation the user was assigned to.
       */
-    override def getVariationForUser(experimentToUserId: Dataset[Row]): DataFrame = {
+    def getVariationForUser(experimentToUserId: Dataset[Row]): DataFrame = {
         variationMapping
     }
 
     def setVariationMapping(variationMapping: DataFrame): Unit = {
         this.variationMapping = variationMapping
+    }
+}
+
+object MockHttpReq extends IHttpReq {
+
+    var mockResponses: Array[String] = Array.fill(1)("")
+    var index = 0
+
+    override def request(url: String, postData: String): String = {
+        val res = mockResponses(index % mockResponses.length)
+        index += 1
+        res
+    }
+
+    def setMockResponse(responses: Array[String]): Unit = {
+        mockResponses = responses
+        index = 0
     }
 }
