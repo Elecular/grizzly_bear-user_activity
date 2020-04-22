@@ -1,0 +1,57 @@
+{
+    "bsonType": "object",
+    "required": [
+        "projectId",
+        "environment",
+        "experimentName",
+        "variation",
+        "segment",
+        "userAction",
+        "hourNumber",
+        "dayNumber",
+        "count",
+        "amount"
+    ],
+    "properties": {
+        "projectId": {
+            "bsonType": "string",
+            "description": "Id of the project this user belongs to"
+        },
+        "environment": {
+            "bsonType": "string",
+            "description": "The environment dev/stage/prod"
+        },
+        "experimentName": {
+            "bsonType": "string",
+            "description": "Name of the experiment"
+        },
+        "variation": {
+            "bsonType": "string",
+            "description": "Variation name of the experiment"
+        },
+        "segment": {
+            "bsonType": "string",
+            "description": "The user segment"
+        },
+        "userAction": {
+            "bsonType": "string",
+            "description": "User action"
+        },
+        "hourNumber": {
+            "bsonType": "number",
+            "description": "Hour number"
+        },
+        "dayNumber": {
+            "bsonType": "number",
+            "description": "Day number"
+        },
+        "count": {
+            "bsonType": "number",
+            "description": "The number of events that happened"
+        },
+        "amount": {
+            "bsonType": "number",
+            "description": "Total magnitude of events."
+        }
+    }
+}

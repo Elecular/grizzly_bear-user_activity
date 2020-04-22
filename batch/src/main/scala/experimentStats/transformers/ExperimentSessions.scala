@@ -69,8 +69,8 @@ object ExperimentSessions extends Transformer {
 
 object VariationMapper extends IUserVariationMapper {
 
-    private val host = sys.env("PRIVATE_EXPERIMENTS_SERVICE_HOST")
-    private val port = sys.env("PRIVATE_EXPERIMENTS_SERVICE_PORT")
+    private val host = sys.env.getOrElse("PRIVATE_EXPERIMENTS_SERVICE_HOST", "")
+    private val port = sys.env.getOrElse("PRIVATE_EXPERIMENTS_SERVICE_PORT", "")
     private var batchSize = 100
     private var http: IHttpReq = new HttpReq()
 

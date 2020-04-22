@@ -3,4 +3,4 @@ kind: ConfigMap
 metadata:
   name: user-activity-config-map
 data:
-  SPARK_CLUSTER_MASTER: local
+  SPARK_CLUSTER_MASTER: local[*]

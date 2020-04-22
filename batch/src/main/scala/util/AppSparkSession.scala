@@ -8,7 +8,7 @@ import org.apache.spark.SparkContext
   */
 object AppSparkSession {
 
-    private val master = sys.env("MASTER");
+    private val master = sys.env.getOrElse("MASTER", "local[*]");
     private val appName = "UserActivityProcessor"
 
     val spark: SparkSession = SparkSession
@@ -16,8 +16,8 @@ object AppSparkSession {
     .master(master)
     .config("spark.mongodb.input.database", "")
     .config("spark.mongodb.input.collection", "")
-    .config("spark.mongodb.output.uri", sys.env("MONGODB_URL"))
-    .config("spark.mongodb.output.database", sys.env("MONGODB_DATABASE"))
+    .config("spark.mongodb.output.uri", sys.env.getOrElse("MONGODB_URL", ""))
+    .config("spark.mongodb.output.database", sys.env.getOrElse("MONGODB_DATABASE", ""))
     .appName(appName)
     .getOrCreate()
 
