@@ -1,4 +1,60 @@
 version: '3'
 services:
-  web:
-    command: npx nodemon --unhandled-rejections=strict ./bin/www
+  user-activity-web:
+    command: >
+      bash -c "npm start -- \
+        --randomDataDump \
+        --projects 5e865ed82a2aeb6436f498dc,5e865ed82a2aeb6436f498de,5e865ed82a2aeb6436f498d7,5e865ed82a2aeb6436f498dd \
+        --segments one,two,three,four \
+        --userActions buy,click,view \
+        --userVolume 50 --sessionVolume 200 --activityVolume 200 \
+        --minTimestamp 79839129600000 --maxTimestamp 79839302400000 \
+        --exit-on-completion && npx nodemon --unhandled-rejections=strict ./bin/www"
+  experiments-web:
+    command: >
+      bash -c "npm start -- \
+        --randomDataDump \
+        --data '[{
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp1\",
+          \"startTime\": \"79839129600000\",
+          \"endTime\": \"79839198720000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp2\",
+          \"startTime\": \"79839233280000\",
+          \"endTime\": \"79839302400000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp3\",
+          \"startTime\": \"79839164160000\",
+          \"endTime\": \"79839267840000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp4\",
+          \"startTime\": \"59839164160000\",
+          \"endTime\": \"59839267840000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498de\",
+          \"experimentName\": \"exp5\",
+          \"startTime\": \"79839164160000\",
+          \"endTime\": \"79839233280000\"
+        }]'"
+  spark-batch:
+    depends_on:
+      - user-activity-web
+      - experiments-web
+    build:
+      context: ../batch
+      dockerfile: Dockerfile.dev
+    links:
+    - "db:database"
+    - "experiments-web:experiments-web"
+    environment:
+      MASTER: local[*]
+      MONGODB_URL: mongodb://username:password@database:27017
+      MONGODB_DATABASE: user_activity
+      PRIVATE_EXPERIMENTS_SERVICE_HOST: experiments-web
+      PRIVATE_EXPERIMENTS_SERVICE_PORT: 8080
+    command: >
+      bash -c "sbt \"local/run HourlyExperimentStats 79839129600000 79839302400000\""

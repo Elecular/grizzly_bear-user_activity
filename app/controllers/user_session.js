@@ -11,7 +11,8 @@ const md5 = require("md5");
  * @param {{
     userId: String,
     environment: String,
-    segments: Array<String>
+    segments: Array<String>,
+    timestamp: [number]
 }} userSession
  * @returns {Promise<UserSession>}
  */

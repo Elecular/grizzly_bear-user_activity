@@ -26,128 +26,66 @@ PORT=80 node bin/data-dump/random.js \
 
  * This script returns an array of user-sessions that were sent as post request to the user-activity service
  */
-
-const http = require("http");
 const argv = require("yargs").argv;
+const userSessionController = require("../../controllers/user_session");
+const userActivityController = require("../../controllers/user_activity");
 
-//Parsing Args
-const projects = argv.projects.split(",");
-const segments = argv.segments.split(",");
-const userActions = argv.userActions.split(",");
-const waitInterval = 10;
-const users = [];
-for (let count = 0; count < argv.userVolume; count++) {
-    users.push(
-        Math.random()
-            .toString(36)
-            .substring(2, 25),
-    );
-}
-const environments = ["stage", "prod"];
-
-//All data that is sent to user-activity service
-const data = [];
-const sessionIds = [];
-//Sending user sessions to user-activity service
-for (let count = 0; count < argv.sessionVolume; count++) {
-    setTimeout(() => {
-        let projectId = getRandomElement(projects);
-        let userId = getRandomElement(users);
-        let selectedSegments = getRandomElements(segments);
-        let environment = getRandomElement(environments);
-        let timestamp = undefined;
-        if (argv.minTimestamp && argv.maxTimestamp)
-            timestamp =
-                Math.floor(
-                    Math.random() * (argv.maxTimestamp - argv.minTimestamp + 1),
-                ) + argv.minTimestamp;
-
-        let req = http.request(
-            {
-                host: "localhost",
-                port: 80,
-                path: "/user-session",
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    projectId: projectId,
-                },
-            },
-            handleUserSessionResponse,
+module.exports = async () => {
+    //Parsing Args
+    const projects = argv.projects.split(",");
+    const segments = argv.segments.split(",");
+    const userActions = argv.userActions.split(",");
+    const users = [];
+    for (let count = 0; count < argv.userVolume; count++) {
+        users.push(
+            Math.random()
+                .toString(36)
+                .substring(2, 25),
         );
-
-        req.write(
-            JSON.stringify({
-                userId: userId,
-                segments: selectedSegments,
-                ...(timestamp && { timestamp }),
-                environment,
-            }),
-        );
-        req.end();
-    }, count * waitInterval);
-}
-
-const handleUserSessionResponse = res => {
-    if (res.statusCode == 201) {
-        let resData = "";
-        res.on("data", chunk => (resData += chunk));
-        res.on("end", () => {
-            const addedSession = JSON.parse(resData);
-            sessionIds.push({
-                sessionId: addedSession._id,
-                projectId: addedSession.projectId,
-            });
-            data.push(addedSession);
-            if (data.length == argv.sessionVolume) sendUserActivity();
-        });
-    } else {
-        console.error(`Error while adding user session ${res.statusCode}`);
     }
-};
+    const environments = ["stage", "prod"];
 
-const sendUserActivity = () => {
+    console.log(`Adding session data`);
+    //All data that is sent to user-activity service
+    const sessions = [];
+    //Sending user sessions to user-activity service
+    for (let count = 0; count < argv.sessionVolume; count++) {
+        sessions.push(
+            await userSessionController.addUserSession(
+                getRandomElement(projects),
+                {
+                    userId: getRandomElement(users),
+                    environment: getRandomElement(environments),
+                    segments: getRandomElements(segments),
+                    timestamp: getRandomTimestamp(
+                        argv.minTimestamp,
+                        argv.maxTimestamp,
+                    ),
+                },
+            ),
+        );
+    }
+
+    console.log(`Adding user activity data`);
     //Sending user activity to user-activity service
     for (let count = 0; count < argv.activityVolume; count++) {
-        let session = getRandomElement(sessionIds);
-        let userAction = getRandomElement(userActions);
-        let timestamp = undefined;
-        let amount = Math.random() * 50;
-        if (argv.minTimestamp && argv.maxTimestamp)
-            timestamp =
-                Math.floor(
-                    Math.random() * (argv.maxTimestamp - argv.minTimestamp + 1),
-                ) + argv.minTimestamp;
-        setTimeout(() => {
-            let req = http.request(
-                {
-                    host: argv.host || "localhost",
-                    port: 80,
-                    path: "/user-activity",
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        projectId: session.projectId,
-                    },
-                },
-                res => {
-                    if (res.statusCode != 201)
-                        console.error(
-                            `Error while adding user activity ${res.statusCode}`,
-                        );
-                },
-            );
+        let session = getRandomElement(sessions);
+        await userActivityController.addUserActivity(
+            session.projectId.toString(),
+            {
+                sessionId: session._id.toString(),
+                userAction: getRandomElement(userActions),
+                timestamp: getRandomTimestamp(
+                    argv.minTimestamp,
+                    argv.maxTimestamp,
+                ),
+                amount: Math.random() * 50,
+            },
+        );
+    }
 
-            req.write(
-                JSON.stringify({
-                    sessionId: session.sessionId,
-                    userAction: userAction,
-                    timestamp,
-                    amount,
-                }),
-            );
-            req.end();
-        }, count * waitInterval);
+    if (argv["exit-on-completion"]) {
+        process.exit(0);
     }
 };
 
@@ -165,3 +103,7 @@ const getRandomElements = array => {
 const getRandomElement = array => {
     return array[Math.floor(Math.random() * array.length)];
 };
+
+const getRandomTimestamp = (minTimestamp, maxTimestamp) =>
+    Math.floor(Math.random() * (maxTimestamp - minTimestamp + 1)) +
+    minTimestamp;

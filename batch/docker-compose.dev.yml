@@ -11,7 +11,7 @@ services:
         --minTimestamp 79839129600000 --maxTimestamp 79839302400000"
   experiments-web:
     command: >
-      bash -c "sleep 15 && npm start -- \
+      bash -c "npm start -- \
         --randomDataDump \
         --data '[{
           \"projectId\": \"5e865ed82a2aeb6436f498dc\",

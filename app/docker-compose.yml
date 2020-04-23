@@ -1,7 +1,7 @@
   
 version: '3'
 services:
-  web:
+  user-activity-web:
     depends_on:
       - db
     build:
@@ -11,6 +11,23 @@ services:
     - '80:80'
     volumes:
     - ./:/code/
+    - /code/node_modules
+    links:
+    - "db:database"
+    - "experiments-web:experiments-web"
+    environment:
+      MONGODB_URL: mongodb://username:password@database:27017
+      MONGODB_DATABASE: user_activity
+      PRIVATE_EXPERIMENTS_SERVICE_HOST: experiments-web
+      PRIVATE_EXPERIMENTS_SERVICE_PORT: 8080
+  experiments-web:
+    depends_on:
+      - db
+    image: gcr.io/grizzly-bear-271511/grizzly-bear-stage/experiments:latest
+    ports:
+    - '3000:80' # Public API
+    - '8080:8080' # Private API
+    volumes:
     - /code/node_modules
     links:
     - "db:database"

@@ -11,6 +11,7 @@ import org.apache.spark.sql.functions.col
 object HourlyExperimentStats extends Batch("HourlyExperimentStats", AggregationInterval.Hourly, 3) {
 
     override def execute(startTime: Long, endTime: Long): Unit = {
+
         val userSessions = UserSessionExtractor.extract(startTime, endTime)
         val experiments = RunningExperimentsExtractor.extract(startTime, endTime)
         //We want all user activities that happened in the next 3 hours

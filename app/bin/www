@@ -20,19 +20,24 @@ app.set('port', port);
 const server = http.createServer(app);
 
 db.connect().then(() => {
+    
+    //Used for dumping random data (Usually for testing purposes)
+    if (argv.randomDataDump)
+        require("./data-dump/random")().then(() => {
+            startServer();
+        });
+    else
+        startServer();
+});
+
+const startServer = () => {
     /**
      * Listen on provided port, on all network interfaces.
      */
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
-
-    //Used for dumping random data (Usually for testing purposes)
-    if (argv.randomDataDump)
-        require("./data-dump/random");
-
-});
-
+}
 /**
  * Normalize a port into a number, string, or false.
  */
