@@ -61,9 +61,10 @@
                 "method": "POST",
                 "header": [
                     {
-                        "key": "projectId",
-                        "value": "507f1f77bcf86cd799439011",
-                        "type": "text"
+                        "key": "",
+                        "value": "",
+                        "type": "text",
+                        "disabled": true
                     }
                 ],
                 "body": {
@@ -76,9 +77,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/user-session",
+                    "raw": "localhost/507f1f77bcf86cd799439011/user-session",
                     "host": ["localhost"],
-                    "path": ["user-session"],
+                    "path": ["507f1f77bcf86cd799439011", "user-session"],
                     "query": [
                         {
                             "key": "",
@@ -111,9 +112,9 @@
                 "method": "POST",
                 "header": [
                     {
-                        "key": "projectId",
+                        "key": "",
                         "type": "text",
-                        "value": "507f1f77bcf86cd799439"
+                        "value": ""
                     }
                 ],
                 "body": {
@@ -126,9 +127,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/user-session",
+                    "raw": "localhost/507f1f77bcf86cd799439/user-session",
                     "host": ["localhost"],
-                    "path": ["user-session"],
+                    "path": ["507f1f77bcf86cd799439", "user-session"],
                     "query": [
                         {
                             "key": "",
@@ -167,9 +168,10 @@
                 "method": "POST",
                 "header": [
                     {
-                        "key": "projectId",
+                        "key": "",
                         "type": "text",
-                        "value": "507f1f77bcf86cd799439011"
+                        "value": "",
+                        "disabled": true
                     }
                 ],
                 "body": {
@@ -182,9 +184,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/user-activity",
+                    "raw": "localhost/507f1f77bcf86cd799439011/user-activity",
                     "host": ["localhost"],
-                    "path": ["user-activity"],
+                    "path": ["507f1f77bcf86cd799439011", "user-activity"],
                     "query": [
                         {
                             "key": "",
@@ -217,9 +219,10 @@
                 "method": "POST",
                 "header": [
                     {
-                        "key": "projectId",
+                        "key": "",
                         "type": "text",
-                        "value": "507f1f77bcf86cd799439011"
+                        "value": "",
+                        "disabled": true
                     }
                 ],
                 "body": {
@@ -232,9 +235,143 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/user-activity",
+                    "raw": "localhost/507f1f77bcf86cd799439011/user-activity",
                     "host": ["localhost"],
-                    "path": ["user-activity"],
+                    "path": ["507f1f77bcf86cd799439011", "user-activity"],
+                    "query": [
+                        {
+                            "key": "",
+                            "value": "",
+                            "disabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Experiment Stats",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "});",
+                            "",
+                            "",
+                            "pm.test(\"Your test name\", function () {",
+                            "    var jsonData = pm.response.json();",
+                            "    pm.expect(jsonData.experimentName).to.eql(\"exp1\");",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "type": "text",
+                        "value": "",
+                        "disabled": true
+                    },
+                    {
+                        "key": "ownerId",
+                        "value": "owner",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/5e865ed82a2aeb6436f498dc/experiment-stats/exp1/environment/prod",
+                    "host": ["localhost"],
+                    "path": [
+                        "5e865ed82a2aeb6436f498dc",
+                        "experiment-stats",
+                        "exp1",
+                        "environment",
+                        "prod"
+                    ],
+                    "query": [
+                        {
+                            "key": "",
+                            "value": "",
+                            "disabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Experiment Stats without permission",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 401\", function () {",
+                            "    pm.response.to.have.status(401);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "type": "text",
+                        "value": "",
+                        "disabled": true
+                    },
+                    {
+                        "key": "ownerId",
+                        "type": "text",
+                        "value": "invalid owner"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/5e865ed82a2aeb6436f498dc/experiment-stats/exp1/environment/prod",
+                    "host": ["localhost"],
+                    "path": [
+                        "5e865ed82a2aeb6436f498dc",
+                        "experiment-stats",
+                        "exp1",
+                        "environment",
+                        "prod"
+                    ],
                     "query": [
                         {
                             "key": "",

@@ -3,6 +3,8 @@ const router = express.Router();
 const experimentStatsController = require("../controllers/experiment_stats");
 const userSessionController = require("../controllers/user_session");
 const userActivityController = require("../controllers/user_activity");
+const validateOwner = require("../api/experiments").validateOwner;
+const createError = require("http-errors");
 
 /* GET home page. */
 router.get("/", function(req, res) {
@@ -14,12 +16,15 @@ router.get("/status", function(req, res) {
     res.json();
 });
 
-router.post("/user-session", async (req, res, next) => {
+/**
+ * Creates a new user session
+ */
+router.post("/:projectId/user-session", async (req, res, next) => {
     try {
         res.status(201);
         res.json(
             await userSessionController.addUserSession(
-                req.headers["projectid"],
+                req.params["projectId"],
                 req.body,
             ),
         );
@@ -28,12 +33,15 @@ router.post("/user-session", async (req, res, next) => {
     }
 });
 
-router.post("/user-activity", async (req, res, next) => {
+/**
+ * Creates a new user activity
+ */
+router.post("/:projectId/user-activity", async (req, res, next) => {
     try {
         res.status(201);
         res.json(
             await userActivityController.addUserActivity(
-                req.headers["projectid"],
+                req.params["projectId"],
                 req.body,
             ),
         );
@@ -42,14 +50,28 @@ router.post("/user-activity", async (req, res, next) => {
     }
 });
 
+/**
+ * Gets experiment stats of given project, experiment and environment
+ */
 router.get(
-    "/experiment-stats/:experimentName/environment/:environment",
+    "/:projectId/experiment-stats/:experimentName/environment/:environment",
     async (req, res, next) => {
         try {
-            res.status(201);
+            if (
+                !(await validateOwner(
+                    req.headers["ownerid"],
+                    req.params["projectId"],
+                ))
+            ) {
+                throw new createError(
+                    401,
+                    "Not Authorized to get experiment stats",
+                );
+            }
+            res.status(200);
             res.json(
                 await experimentStatsController.getExperimentStats(
-                    req.headers["projectid"],
+                    req.params["projectId"],
                     req.params["experimentName"],
                     req.params["environment"],
                 ),
