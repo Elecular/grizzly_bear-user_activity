@@ -33,6 +33,55 @@
             "response": []
         },
         {
+            "name": "Create Project",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 201\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "});",
+                            "",
+                            "pm.test(\"Body has id\", function() {",
+                            "    pm.expect(pm.response.json()).to.have.property('_id');",
+                            "});",
+                            "",
+                            "pm.environment.set(\"sampleProjectId\", pm.response.json()[\"_id\"]);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "ownerid",
+                        "type": "text",
+                        "value": "owner"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n\t\"projectName\": \"testProject\"\n}",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost:3000/project",
+                    "host": ["localhost"],
+                    "port": "3000",
+                    "path": ["project"]
+                }
+            },
+            "response": []
+        },
+        {
             "name": "Add User Session",
             "event": [
                 {
@@ -77,9 +126,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/507f1f77bcf86cd799439011/user-session",
+                    "raw": "localhost/{{sampleProjectId}}/user-session",
                     "host": ["localhost"],
-                    "path": ["507f1f77bcf86cd799439011", "user-session"],
+                    "path": ["{{sampleProjectId}}", "user-session"],
                     "query": [
                         {
                             "key": "",
@@ -127,9 +176,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/507f1f77bcf86cd799439/user-session",
+                    "raw": "localhost/{{sampleProjectId}}/user-session",
                     "host": ["localhost"],
-                    "path": ["507f1f77bcf86cd799439", "user-session"],
+                    "path": ["{{sampleProjectId}}", "user-session"],
                     "query": [
                         {
                             "key": "",
@@ -184,9 +233,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/507f1f77bcf86cd799439011/user-activity",
+                    "raw": "localhost/{{sampleProjectId}}/user-activity",
                     "host": ["localhost"],
-                    "path": ["507f1f77bcf86cd799439011", "user-activity"],
+                    "path": ["{{sampleProjectId}}", "user-activity"],
                     "query": [
                         {
                             "key": "",
@@ -235,9 +284,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/507f1f77bcf86cd799439011/user-activity",
+                    "raw": "localhost/{{sampleProjectId}}/user-activity",
                     "host": ["localhost"],
-                    "path": ["507f1f77bcf86cd799439011", "user-activity"],
+                    "path": ["{{sampleProjectId}}", "user-activity"],
                     "query": [
                         {
                             "key": "",
@@ -299,10 +348,10 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/5e865ed82a2aeb6436f498dc/experiment-stats/exp1/environment/prod",
+                    "raw": "localhost/{{sampleProjectId}}/experiment-stats/exp1/environment/prod",
                     "host": ["localhost"],
                     "path": [
-                        "5e865ed82a2aeb6436f498dc",
+                        "{{sampleProjectId}}",
                         "experiment-stats",
                         "exp1",
                         "environment",
@@ -363,10 +412,10 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/5e865ed82a2aeb6436f498dc/experiment-stats/exp1/environment/prod",
+                    "raw": "localhost/{{sampleProjectId}}/experiment-stats/exp1/environment/prod",
                     "host": ["localhost"],
                     "path": [
-                        "5e865ed82a2aeb6436f498dc",
+                        "{{sampleProjectId}}",
                         "experiment-stats",
                         "exp1",
                         "environment",

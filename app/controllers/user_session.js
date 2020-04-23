@@ -36,7 +36,7 @@ module.exports.addUserSession = async (projectId, userSession) => {
         const response = await db.collection("user_session").insertOne({
             userId: md5(userSession.userId),
             environment: userSession.environment,
-            segments: [...new Set(userSession.segments), "all"], //TODO: Add "all" segment and return 400 if user sends all as a segment type
+            segments: [...new Set(userSession.segments), "all"],
             projectId: ObjectID(projectId),
             hourNumber: Math.floor(timestamp / (3600 * 1000)),
             timestamp: timestamp,
