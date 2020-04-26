@@ -6,6 +6,12 @@ on:
     push:
         branches: [master]
 
+env:
+    GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
+    GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
+    GKE_KEY: ${{secrets.GKE_KEY}}
+    REGISTRY_HOSTNAME: gcr.io
+
 jobs:
     test:
         runs-on: ubuntu-latest
@@ -27,9 +33,9 @@ jobs:
 
             # Configure docker to use the gcloud command-line tool as a credential helper
             - run: |
-                    # Set up docker to authenticate
-                    # via gcloud command-line tool.
-                    gcloud auth configure-docker
+                  # Set up docker to authenticate
+                  # via gcloud command-line tool.
+                  gcloud auth configure-docker
                     
             # Running tests
             - name: Testing
