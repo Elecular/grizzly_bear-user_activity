@@ -20,10 +20,10 @@ jobs:
 
             # Setup gcloud CLI
             - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-                with:
-                    version: "270.0.0"
-                    service_account_email: ${{ env.GKE_EMAIL }}
-                    service_account_key: ${{ env.GKE_KEY }}
+              with:
+                  version: "270.0.0"
+                  service_account_email: ${{ env.GKE_EMAIL }}
+                  service_account_key: ${{ env.GKE_KEY }}
 
             # Configure docker to use the gcloud command-line tool as a credential helper
             - run: |
