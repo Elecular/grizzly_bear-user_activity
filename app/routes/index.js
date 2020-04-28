@@ -6,6 +6,7 @@ const userActivityController = require("../controllers/user_activity");
 const validateOwner = require("../api/experiments").validateOwner;
 const createError = require("http-errors");
 const { checkSchema, validationResult } = require("express-validator");
+const getBatchRuns = require("../controllers/batch_runs").getBatchRuns;
 
 /* GET home page. */
 router.get("/", function(req, res) {
@@ -15,6 +16,11 @@ router.get("/", function(req, res) {
 router.get("/status", function(req, res) {
     res.status(200);
     res.json();
+});
+
+router.get("/batch/status", async (req, res) => {
+    res.json(await getBatchRuns(7));
+    res.status(200);
 });
 
 /**
