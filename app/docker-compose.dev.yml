@@ -14,11 +14,16 @@ services:
     command: >
       bash -c "npm start -- \
         --randomDataDump \
+        --ownerId xo509wTObnqcYKiOgLCJoLcHqSpFKCjL@clients \
         --data '[{
           \"projectId\": \"5e865ed82a2aeb6436f498dc\",
           \"experimentName\": \"exp1\",
           \"startTime\": \"79839129600000\",
           \"endTime\": \"79839198720000\"
+        }, {
+          \"projectId\": \"5e865ed82a2aeb6436f498dc\",
+          \"experimentName\": \"exp8\",
+          \"startTime\": \"79839129600000\"
         }, {
           \"projectId\": \"5e865ed82a2aeb6436f498dc\",
           \"experimentName\": \"exp2\",

@@ -1,4 +1,5 @@
 package experimentStats.transformers
+import experimentStats.extractors.Experiment
 import org.apache.spark.sql.{DataFrame, Dataset, Row}
 import org.json4s.JsonAST.{JObject, JString}
 import org.json4s.jackson.JsonMethods
@@ -11,6 +12,7 @@ class ExperimentSessionsTest extends AnyFunSuite {
     test("Can map users to experiments") {
         val userSessions = Seq(
             ("session_id_1", "project_id_1", "prod", "user_id_1", Array("all", "one", "three"), 1700L, 10),
+            ("session_id_11", "project_id_1", "prod", "user_id_1", Array("all", "one", "three"), 100000L, 10),
             ("session_id_2", "project_id_1", "prod", "user_id_2", Array("all", "one", "three"), 2300L, 10),
             ("session_id_3", "project_id_1", "prod", "user_id_3", Array("all", "one", "three"), 10000L, 10),
             ("session_id_4", "project_id_2", "prod", "user_id_1", Array("all", "one", "three"), 4000L, 10),
@@ -24,13 +26,13 @@ class ExperimentSessionsTest extends AnyFunSuite {
         ).toDF("_id", "projectId", "environment", "userId",  "segments", "timestamp", "hourNumber")
 
         val experiments = Seq(
-            ("project_id_1", "exp_1", 1000L, 2000L),
-            ("project_id_1", "exp_2", 1500L, 2500L),
-            ("project_id_1", "exp_3", 4000L, 5000L),
-            ("project_id_2", "exp_1", 500L, 6000L),
-            ("project_id_2", "exp_2", 10000L, 20000L)
+            Experiment("project_id_1", "exp_4", 50000L, None),
+            Experiment("project_id_1", "exp_1", 1000L, Some(2000L)),
+            Experiment("project_id_1", "exp_2", 1500L, Some(2500L)),
+            Experiment("project_id_1", "exp_3", 4000L, Some(5000L)),
+            Experiment("project_id_2", "exp_1", 500L, Some(6000L)),
+            Experiment("project_id_2", "exp_2", 10000L, Some(20000L))
         ).toDF("projectId", "experimentName", "startTime", "endTime")
-
         //Mocking response from experiments service
         val mockRes1 = Seq(
             ("project_id_2", "exp_2", "user_id_2", "variation2"),
@@ -39,6 +41,7 @@ class ExperimentSessionsTest extends AnyFunSuite {
 
         val mockRes2 = Seq(
             ("project_id_1", "exp_1", "user_id_1", "variation1"),
+            ("project_id_1", "exp_4", "user_id_1", "variation2"),
             ("project_id_1", "exp_2", "user_id_1", "variation2"),
             ("project_id_1", "exp_2", "user_id_2", "variation1"),
             ("project_id_2", "exp_1", "user_id_1", "variation2")
@@ -52,9 +55,9 @@ class ExperimentSessionsTest extends AnyFunSuite {
             "userSessions" -> userSessions,
             "experiments"-> experiments
         ))
-
         val expected = Seq(
             ("project_id_1", "prod", "user_id_1", "exp_1", "variation1", "session_id_1", 10, Array("all", "one", "three")),
+            ("project_id_1", "prod", "user_id_1", "exp_4", "variation2", "session_id_11", 10, Array("all", "one", "three")),
             ("project_id_1", "prod", "user_id_1", "exp_2", "variation2", "session_id_1", 10, Array("all", "one", "three")),
             ("project_id_1", "prod", "user_id_2", "exp_2", "variation1", "session_id_2", 10, Array("all", "one", "three")),
             ("project_id_2", "prod", "user_id_1", "exp_1", "variation2", "session_id_4", 10, Array("all", "one", "three")),

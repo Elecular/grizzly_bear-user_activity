@@ -65,6 +65,8 @@ The Dockerfile is located in app/Dockerfile. This can be used to deploy a contai
 
 1. MONGODB_URL : URL of the mongodb database
 2. MONGODB_DATABASE : A Database name.
+3. PUBLIC_EXPERIMENTS_SERVICE_HOST: <url of public app of https://github.com/nj20/grizzly_bear-experiments>
+4. PUBLIC_EXPERIMENTS_SERVICE_PORT: <port of public app of https://github.com/nj20/grizzly_bear-experiments>
 
 Here is an example docker-compose file that is deploying this docker image on port 80:
 

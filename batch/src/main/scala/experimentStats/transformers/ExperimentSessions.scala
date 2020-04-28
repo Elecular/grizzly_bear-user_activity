@@ -33,8 +33,11 @@ object ExperimentSessions extends Transformer {
         val experimentSessions = userSession
         .join(experiments, Seq("projectId"), "inner")
         .filter(
-            col("timestamp") >= col("startTime") &&
-            col("timestamp") <= col("endTime")
+            (col("timestamp") >= col("startTime")) &&
+            (
+                (col("endTime").isNull) ||
+                (col("timestamp") <= col("endTime"))
+            )
         )
         .select(
             col("sessionId"),
@@ -83,7 +86,7 @@ object VariationMapper extends IUserVariationMapper {
 
         batches.foreach(batch => {
             val variationSessions = http.request(
-                s"http://$host:$port/experiment/variations",
+                s"http://$host:$port/bulk/variations",
                 batch.toJSON.collect().mkString("[",",","]")
             )
 

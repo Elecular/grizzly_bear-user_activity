@@ -5,6 +5,7 @@ const userSessionController = require("../controllers/user_session");
 const userActivityController = require("../controllers/user_activity");
 const validateOwner = require("../api/experiments").validateOwner;
 const createError = require("http-errors");
+const { checkSchema, validationResult } = require("express-validator");
 
 /* GET home page. */
 router.get("/", function(req, res) {
@@ -19,54 +20,113 @@ router.get("/status", function(req, res) {
 /**
  * Creates a new user session
  */
-router.post("/:projectId/user-session", async (req, res, next) => {
-    try {
-        res.status(201);
-        res.json(
-            await userSessionController.addUserSession(
-                req.params["projectId"],
-                req.body,
-            ),
-        );
-    } catch (err) {
-        next(err);
-    }
-});
+router.post(
+    "/projects/:projectId/user-session",
+    [
+        checkSchema({
+            userId: {
+                isString: true,
+                isEmpty: {
+                    negated: true,
+                },
+            },
+            environment: {
+                isString: true,
+                isEmpty: {
+                    negated: true,
+                },
+            },
+            segments: {
+                isArray: true,
+            },
+            timestamp: {
+                optional: true,
+                isNumeric: true,
+                toInt: true,
+            },
+        }),
+    ],
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        try {
+            res.status(201);
+            res.json(
+                await userSessionController.addUserSession(
+                    req.params["projectId"],
+                    req.body,
+                ),
+            );
+        } catch (err) {
+            next(err);
+        }
+    },
+);
 
 /**
  * Creates a new user activity
  */
-router.post("/:projectId/user-activity", async (req, res, next) => {
-    try {
-        res.status(201);
-        res.json(
-            await userActivityController.addUserActivity(
-                req.params["projectId"],
-                req.body,
-            ),
-        );
-    } catch (err) {
-        next(err);
-    }
-});
+router.post(
+    "/projects/:projectId/user-activity",
+    [
+        checkSchema({
+            sessionId: {
+                isString: true,
+            },
+            userAction: {
+                isString: true,
+                isEmpty: {
+                    negated: true,
+                },
+            },
+            amount: {
+                isInt: true,
+                toInt: true,
+            },
+            timestamp: {
+                optional: true,
+                isNumeric: true,
+                toInt: true,
+            },
+        }),
+    ],
+    async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
+        try {
+            res.status(201);
+            res.json(
+                await userActivityController.addUserActivity(
+                    req.params["projectId"],
+                    req.body,
+                ),
+            );
+        } catch (err) {
+            next(err);
+        }
+    },
+);
 
 /**
  * Gets experiment stats of given project, experiment and environment
  */
 router.get(
-    "/:projectId/experiment-stats/:experimentName/environment/:environment",
+    "/projects/:projectId/experiments/:experimentName/environments/:environment/stats",
     async (req, res, next) => {
         try {
             if (
                 !(await validateOwner(
-                    req.headers["ownerid"],
+                    req.headers["authorization"],
                     req.params["projectId"],
                 ))
             ) {
-                throw new createError(
-                    401,
-                    "Not Authorized to get experiment stats",
-                );
+                throw new createError(403, "Forbidden");
             }
             res.status(200);
             res.json(

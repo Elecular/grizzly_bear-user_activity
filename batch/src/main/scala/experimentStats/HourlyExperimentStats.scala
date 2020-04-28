@@ -14,6 +14,7 @@ object HourlyExperimentStats extends Batch("HourlyExperimentStats", AggregationI
 
         val userSessions = UserSessionExtractor.extract(startTime, endTime)
         val experiments = RunningExperimentsExtractor.extract(startTime, endTime)
+
         //We want all user activities that happened in the next 3 hours
         val userActivity = UserActivityExtractor.extract(startTime, endTime + (3600 * 1000 * 3))
 

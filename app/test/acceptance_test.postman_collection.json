@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "350d9eb1-3f36-4e1e-9fcb-d7b9c84c9949",
+        "_postman_id": "1e4d4410-ad67-4b46-87c4-bef6b120d499",
         "name": "user_activity_acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -33,6 +33,78 @@
             "response": []
         },
         {
+            "name": "Get Access Token For Test Client",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "7c3c5a9b-d0f1-4daf-a7c8-2cbbf86f16a0",
+                        "exec": [
+                            "pm.environment.set(\"access_token\", pm.response.json()[\"access_token\"]);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"client_id\":\"xo509wTObnqcYKiOgLCJoLcHqSpFKCjL\",\"client_secret\":\"O9WUmL1WtKRJ35TByGcrcoau0tNE9m5Yd1SC4x4V9VzQoRX4c1XUBhO6BBPYmc5B\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
+                },
+                "url": {
+                    "raw": "https://grizzly-bear.eu.auth0.com/oauth/token",
+                    "protocol": "https",
+                    "host": ["grizzly-bear", "eu", "auth0", "com"],
+                    "path": ["oauth", "token"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Access Token For Test Client 2",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "7c3c5a9b-d0f1-4daf-a7c8-2cbbf86f16a0",
+                        "exec": [
+                            "pm.environment.set(\"access_token_2\", pm.response.json()[\"access_token\"]);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"client_id\":\"EYHbAnyR8eou9NmnjwEtRWSWM3ZcmMe3\",\"client_secret\":\"3CMEeO77nQQlzwe2VB0Zk9x82rjCkTxV_55_-ReXWyu7sKzqFUaRwxnNlqbFIFgd\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
+                },
+                "url": {
+                    "raw": "https://grizzly-bear.eu.auth0.com/oauth/token",
+                    "protocol": "https",
+                    "host": ["grizzly-bear", "eu", "auth0", "com"],
+                    "path": ["oauth", "token"]
+                }
+            },
+            "response": []
+        },
+        {
             "name": "Create Project",
             "event": [
                 {
@@ -58,9 +130,9 @@
                 "method": "POST",
                 "header": [
                     {
-                        "key": "ownerid",
+                        "key": "Authorization",
                         "type": "text",
-                        "value": "owner"
+                        "value": "Bearer {{access_token}}"
                     }
                 ],
                 "body": {
@@ -73,10 +145,10 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost:3000/project",
+                    "raw": "localhost:3000/projects",
                     "host": ["localhost"],
                     "port": "3000",
-                    "path": ["project"]
+                    "path": ["projects"]
                 }
             },
             "response": []
@@ -126,9 +198,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/{{sampleProjectId}}/user-session",
+                    "raw": "localhost/projects/{{sampleProjectId}}/user-session",
                     "host": ["localhost"],
-                    "path": ["{{sampleProjectId}}", "user-session"],
+                    "path": ["projects", "{{sampleProjectId}}", "user-session"],
                     "query": [
                         {
                             "key": "",
@@ -176,9 +248,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/{{sampleProjectId}}/user-session",
+                    "raw": "localhost/projects/{{sampleProjectId}}/user-session",
                     "host": ["localhost"],
-                    "path": ["{{sampleProjectId}}", "user-session"],
+                    "path": ["projects", "{{sampleProjectId}}", "user-session"],
                     "query": [
                         {
                             "key": "",
@@ -233,9 +305,13 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/{{sampleProjectId}}/user-activity",
+                    "raw": "localhost/projects/{{sampleProjectId}}/user-activity",
                     "host": ["localhost"],
-                    "path": ["{{sampleProjectId}}", "user-activity"],
+                    "path": [
+                        "projects",
+                        "{{sampleProjectId}}",
+                        "user-activity"
+                    ],
                     "query": [
                         {
                             "key": "",
@@ -284,9 +360,13 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/{{sampleProjectId}}/user-activity",
+                    "raw": "localhost/projects/{{sampleProjectId}}/user-activity",
                     "host": ["localhost"],
-                    "path": ["{{sampleProjectId}}", "user-activity"],
+                    "path": [
+                        "projects",
+                        "{{sampleProjectId}}",
+                        "user-activity"
+                    ],
                     "query": [
                         {
                             "key": "",
@@ -333,8 +413,8 @@
                         "disabled": true
                     },
                     {
-                        "key": "ownerId",
-                        "value": "owner",
+                        "key": "Authorization",
+                        "value": "Bearer {{access_token}}",
                         "type": "text"
                     }
                 ],
@@ -348,21 +428,16 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/{{sampleProjectId}}/experiment-stats/exp1/environment/prod",
+                    "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1/environments/prod/stats",
                     "host": ["localhost"],
                     "path": [
+                        "projects",
                         "{{sampleProjectId}}",
-                        "experiment-stats",
+                        "experiments",
                         "exp1",
-                        "environment",
-                        "prod"
-                    ],
-                    "query": [
-                        {
-                            "key": "",
-                            "value": "",
-                            "disabled": true
-                        }
+                        "environments",
+                        "prod",
+                        "stats"
                     ]
                 }
             },
@@ -397,9 +472,9 @@
                         "disabled": true
                     },
                     {
-                        "key": "ownerId",
+                        "key": "Authorization",
                         "type": "text",
-                        "value": "invalid owner"
+                        "value": "Bearer invalid_token"
                     }
                 ],
                 "body": {
@@ -412,14 +487,82 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/{{sampleProjectId}}/experiment-stats/exp1/environment/prod",
+                    "raw": "localhost/projects/5e865ed82a2aeb6436f498dc/experiments/exp1/environments/prod/stats",
                     "host": ["localhost"],
                     "path": [
-                        "{{sampleProjectId}}",
-                        "experiment-stats",
+                        "projects",
+                        "5e865ed82a2aeb6436f498dc",
+                        "experiments",
                         "exp1",
-                        "environment",
-                        "prod"
+                        "environments",
+                        "prod",
+                        "stats"
+                    ],
+                    "query": [
+                        {
+                            "key": "",
+                            "value": "",
+                            "disabled": true
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Experiment Stats with invalid permissions",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "exec": [
+                            "pm.test(\"Status code is 403\", function () {",
+                            "    pm.response.to.have.status(403);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "type": "text",
+                        "value": "",
+                        "disabled": true
+                    },
+                    {
+                        "key": "Authorization",
+                        "type": "text",
+                        "value": "Bearer {{access_token_2}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/projects/5e865ed82a2aeb6436f498dc/experiments/exp1/environments/prod/stats",
+                    "host": ["localhost"],
+                    "path": [
+                        "projects",
+                        "5e865ed82a2aeb6436f498dc",
+                        "experiments",
+                        "exp1",
+                        "environments",
+                        "prod",
+                        "stats"
                     ],
                     "query": [
                         {
