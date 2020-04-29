@@ -6,5 +6,5 @@ spec:
   ports:
   - port: 80
     $patch: delete
-  - port: 3000
+  - port: 6600
     targetPort: 80

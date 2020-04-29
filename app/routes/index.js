@@ -32,6 +32,11 @@ router.get(
         }),
     ],
     async (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+
         try {
             res.json(await getBatchRuns(req.query.batchName, 7));
             res.status(200);
