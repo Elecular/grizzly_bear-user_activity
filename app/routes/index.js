@@ -18,10 +18,28 @@ router.get("/status", function(req, res) {
     res.json();
 });
 
-router.get("/batch/status", async (req, res) => {
-    res.json(await getBatchRuns(7));
-    res.status(200);
-});
+router.get(
+    "/batch/status",
+    [
+        checkSchema({
+            batchName: {
+                isEmpty: {
+                    negated: true,
+                },
+                isString: true,
+                in: "query",
+            },
+        }),
+    ],
+    async (req, res, next) => {
+        try {
+            res.json(await getBatchRuns(req.query.batchName, 7));
+            res.status(200);
+        } catch (err) {
+            next(err);
+        }
+    },
+);
 
 /**
  * Creates a new user session

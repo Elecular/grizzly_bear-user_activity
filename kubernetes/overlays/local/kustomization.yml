@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
 - ../../base
+patches:
+- port.yml
 images:
 - name: BATCH_DOCKER_IMAGE
   newName: user-activity-batch
