@@ -12,6 +12,7 @@
     },
     "dependencies": {
         "cookie-parser": "~1.4.4",
+        "cors": "^2.8.5",
         "debug": "~2.6.9",
         "express": "~4.16.1",
         "express-validator": "^6.4.0",
@@ -20,6 +21,7 @@
         "mongodb": "^3.5.5",
         "morgan": "~1.9.1",
         "node-fetch": "^2.6.0",
+        "react-bootstrap-wizard": "0.0.7",
         "recursive-readdir": "^2.2.2",
         "yargs": "^15.3.1"
     },

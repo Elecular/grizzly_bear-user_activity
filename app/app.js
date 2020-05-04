@@ -4,9 +4,11 @@ const logger = require("morgan");
 const log4js = require("log4js").getLogger();
 const httpHandler = require("./middleware/httpErrorHandler");
 const indexRouter = require("./routes/index");
+const cors = require("cors");
 
 const app = express();
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
