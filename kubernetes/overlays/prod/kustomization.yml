@@ -6,6 +6,5 @@ resources:
 
 configMapGenerator:
 - name: env
-  behavior: merge
   literals:
     - env=prod
