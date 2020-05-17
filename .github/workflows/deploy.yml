@@ -28,7 +28,7 @@ env:
     GKE_ZONE: ${{ github.event.deployment.payload.gke_zone }}
     GKE_CLUSTER: ${{ github.event.deployment.payload.gke_cluster }}
     ENVIRONMENT: ${{ github.event.deployment.environment }}
-    DEPLOYMENT_NAME: user-activity-deployment
+    DEPLOYMENT_NAME: user-activity
     DEPLOYMENT_ID: ${{ github.event.deployment.id }}
     IMAGE: user-activity
     REGISTRY_HOSTNAME: gcr.io
