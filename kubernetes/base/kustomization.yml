@@ -5,4 +5,5 @@ resources:
 - service.yml
 - cronjob.yml
 - configmap.yml
+- ingress.yml
 

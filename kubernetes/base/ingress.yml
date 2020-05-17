@@ -1,0 +1,12 @@
+apiVersion: "extensions/v1beta1"
+kind: "Ingress"
+metadata:
+  name: "user-activity-ingress"
+  namespace: "default"
+  annotations:
+    networking.gke.io/managed-certificates: elecular
+    kubernetes.io/ingress.global-static-ip-name: user-activity-api
+spec:
+  backend:
+    serviceName: "user-activity"
+    servicePort: 80
