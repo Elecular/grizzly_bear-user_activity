@@ -9,4 +9,4 @@ metadata:
 spec:
   backend:
     serviceName: "user-activity"
-    servicePort: 80
+    servicePort: 3000
