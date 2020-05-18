@@ -4,9 +4,9 @@ metadata:
   name: "user-activity-ingress"
   namespace: "default"
   annotations:
-    networking.gke.io/managed-certificates: elecular
+    networking.gke.io/managed-certificates: user-activity
     kubernetes.io/ingress.global-static-ip-name: user-activity-api
 spec:
   backend:
     serviceName: "user-activity"
-    servicePort: 3000
+    servicePort: 80
