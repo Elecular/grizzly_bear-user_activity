@@ -12,5 +12,3 @@ spec:
           targetPort: 80
     selector:
         app: "user-activity"
-    type: "LoadBalancer"
-    loadBalancerIP: ""
