@@ -16,7 +16,8 @@ object MongoConnector {
             Map(
                 "uri" -> sys.env("MONGODB_URL"),
                 "database" -> sys.env("MONGODB_DATABASE"),
-                "collection" -> collectionName
+                "collection" -> collectionName,
+                "readPreference.name" -> "secondaryPreferred"
             )
         )
          MongoSpark.load[D](
