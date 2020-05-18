@@ -1,11 +1,10 @@
 name: Test
 
-#TODO - Enable after finishing k8s config
-#on:
-#    pull_request:
-#        branches: [master]
-#    push:
-#        branches: [master]
+on:
+    pull_request:
+        branches: [master]
+    push:
+        branches: [master]
 
 env:
     GKE_PROJECT: ${{ secrets.GKE_PROJECT }}
