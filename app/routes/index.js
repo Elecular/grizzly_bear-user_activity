@@ -112,8 +112,8 @@ router.post(
                 },
             },
             amount: {
-                isInt: true,
-                toInt: true,
+                isFloat: true,
+                toFloat: true,
             },
             timestamp: {
                 optional: true,
