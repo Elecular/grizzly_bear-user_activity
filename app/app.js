@@ -5,17 +5,9 @@ const log4js = require("log4js").getLogger();
 const httpHandler = require("./middleware/httpErrorHandler");
 const indexRouter = require("./routes/index");
 const cors = require("cors");
-const rateLimit = require("express-rate-limit");
 
 const app = express();
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 250, // limit each IP to 250 requests per windowMs,
-    message:
-        "Too many requests. You can log upto 250 events every 15 minutes. Please contact info@elecular.com if you need to raise this limit.",
-});
 
-app.use(limiter);
 app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
