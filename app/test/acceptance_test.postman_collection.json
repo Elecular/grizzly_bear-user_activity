@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "1e4d4410-ad67-4b46-87c4-bef6b120d499",
+        "_postman_id": "1aec4ed1-020b-4b77-beda-7ea18305a90f",
         "name": "user_activity_acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -11,7 +11,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "48809ee5-6c96-4394-be2e-a5e6c09e27f9",
                         "exec": [
                             "pm.test(\"Status code is 200\", function () {",
                             "    pm.response.to.have.status(200);",
@@ -38,7 +38,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "7c3c5a9b-d0f1-4daf-a7c8-2cbbf86f16a0",
+                        "id": "4d4f938b-dbdf-4e01-a271-40bafd0ee395",
                         "exec": [
                             "pm.environment.set(\"access_token\", pm.response.json()[\"access_token\"]);"
                         ],
@@ -60,9 +60,9 @@
                     "raw": "{\"client_id\":\"xo509wTObnqcYKiOgLCJoLcHqSpFKCjL\",\"client_secret\":\"O9WUmL1WtKRJ35TByGcrcoau0tNE9m5Yd1SC4x4V9VzQoRX4c1XUBhO6BBPYmc5B\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
                 },
                 "url": {
-                    "raw": "https://grizzly-bear.eu.auth0.com/oauth/token",
+                    "raw": "https://auth.elecular.com/oauth/token",
                     "protocol": "https",
-                    "host": ["grizzly-bear", "eu", "auth0", "com"],
+                    "host": ["auth", "elecular", "com"],
                     "path": ["oauth", "token"]
                 }
             },
@@ -74,7 +74,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "7c3c5a9b-d0f1-4daf-a7c8-2cbbf86f16a0",
+                        "id": "83d95762-6c31-4c5f-9f3f-700cf42b6f76",
                         "exec": [
                             "pm.environment.set(\"access_token_2\", pm.response.json()[\"access_token\"]);"
                         ],
@@ -96,9 +96,9 @@
                     "raw": "{\"client_id\":\"EYHbAnyR8eou9NmnjwEtRWSWM3ZcmMe3\",\"client_secret\":\"3CMEeO77nQQlzwe2VB0Zk9x82rjCkTxV_55_-ReXWyu7sKzqFUaRwxnNlqbFIFgd\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
                 },
                 "url": {
-                    "raw": "https://grizzly-bear.eu.auth0.com/oauth/token",
+                    "raw": "https://auth.elecular.com/oauth/token",
                     "protocol": "https",
-                    "host": ["grizzly-bear", "eu", "auth0", "com"],
+                    "host": ["auth", "elecular", "com"],
                     "path": ["oauth", "token"]
                 }
             },
@@ -110,7 +110,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "f208b292-ab76-4772-8d78-43cccac7db4b",
                         "exec": [
                             "pm.test(\"Status code is 201\", function () {",
                             "    pm.response.to.have.status(201);",
@@ -159,7 +159,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "ce58b625-95c2-43df-b5ad-542968c53193",
                         "exec": [
                             "pm.test(\"Status code is 201\", function () {",
                             "    pm.response.to.have.status(201);",
@@ -218,7 +218,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "26e85bf8-4e05-474e-9dfc-581d2eae4b73",
                         "exec": [
                             "pm.test(\"Status code is 400\", function () {",
                             "    pm.response.to.have.status(400);",
@@ -268,7 +268,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "4c143994-265a-40dd-a42c-93097fe88766",
                         "exec": [
                             "pm.test(\"Status code is 201\", function () {",
                             "    pm.response.to.have.status(201);",
@@ -329,7 +329,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "9a35b2bf-2d17-4550-9862-03f6e531e818",
                         "exec": [
                             "pm.test(\"Status code is 400\", function () {",
                             "    pm.response.to.have.status(400);",
@@ -384,7 +384,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "726f3dcb-bb37-499f-819a-f04dae2ed347",
                         "exec": [
                             "pm.test(\"Status code is 200\", function () {",
                             "    pm.response.to.have.status(200);",
@@ -449,7 +449,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "74af1ff1-31f3-4acd-923e-5c742018660b",
                         "exec": [
                             "pm.test(\"Status code is 401\", function () {",
                             "    pm.response.to.have.status(401);",
@@ -515,7 +515,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "a7b22320-ab53-4493-b868-a356fc851b36",
+                        "id": "5d824485-5af7-4dfd-b0bb-50abfbfe4f16",
                         "exec": [
                             "pm.test(\"Status code is 403\", function () {",
                             "    pm.response.to.have.status(403);",
