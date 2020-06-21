@@ -4,5 +4,6 @@ resources:
 - deployment.yml
 - service.yml
 - cronjob.yml
+- cronjob-mau.yml
 - configmap.yml
 
