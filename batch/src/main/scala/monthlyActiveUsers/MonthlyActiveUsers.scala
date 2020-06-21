@@ -28,8 +28,11 @@ object MonthlyActiveUsers extends Batch("MonthlyActiveUsers", AggregationInterva
 
         //Monthly Active Users (MAU)
         val mau = calculateUniqueUsersPerProject(userSessions)
-        .withColumn("timestamp", typedLit(dateFormat.format(startTime)))
-
+        .withColumn("date", typedLit(dateFormat.format(startTime)))
+        .withColumn("_id", sha2(concat(
+            col("date"),
+            col("projectId")
+        ), 256))
         MongoConnector.writeToCollection("project_mau", mau)
     }
 
