@@ -10,6 +10,9 @@ import org.apache.spark.sql.functions.col
   */
 object HourlyExperimentStats extends Batch("HourlyExperimentStats", AggregationInterval.Hourly, 3) {
 
+    /*
+     * Calculates experiment stats for given time.
+     */
     override def execute(startTime: Long, endTime: Long): Unit = {
 
         val userSessions = UserSessionExtractor.extract(startTime, endTime)
