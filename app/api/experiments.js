@@ -11,8 +11,8 @@ if (!host || !port) {
 }
 
 /**
- * Validates if the given ownerid is the actual owner of the given project
- * @param {String} ownerId
+ * Validates if the given owner is the actual owner of the given project
+ * @param {String} authToken
  * @param {String} projectId
  * Returns true if everything is ok
  * Returns 401 if user is not authorized
@@ -38,14 +38,14 @@ module.exports.validateOwner = async (authToken, projectId) => {
 };
 
 /**
- * Validates if the given ownerid has the given permission
- * @param {String} ownerId
+ * Validates if the given owner has the given permission
+ * @param {String} authToken
  * @param {String} permission
  * Returns 200 if everything is ok
  * Returns 401 if user is not authorized
  * Returns 403 if user is forbidden
  */
-module.exports.validatePermission = async (authToken, permission) => {
+module.exports.hasPermission = async (authToken, permission) => {
     const res = await fetch(`http://${host}:${port}/owner/scope`, {
         method: "GET",
         headers: {
@@ -59,4 +59,8 @@ module.exports.validatePermission = async (authToken, permission) => {
     } else {
         throw new createError(401, "Not Authorized");
     }
+};
+
+module.exports.Permissions = {
+    READ_ALL_MAU: "read:all:mau",
 };

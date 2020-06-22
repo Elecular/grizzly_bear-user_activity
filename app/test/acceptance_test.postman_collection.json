@@ -1,6 +1,6 @@
 {
     "info": {
-        "_postman_id": "1aec4ed1-020b-4b77-beda-7ea18305a90f",
+        "_postman_id": "2bb25bc2-f8c7-4eb4-98d7-a71975261071",
         "name": "user_activity_acceptance_test",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
@@ -11,7 +11,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "48809ee5-6c96-4394-be2e-a5e6c09e27f9",
+                        "id": "12b20268-d5e5-4518-b314-8e3c19f23ab8",
                         "exec": [
                             "pm.test(\"Status code is 200\", function () {",
                             "    pm.response.to.have.status(200);",
@@ -38,7 +38,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "4d4f938b-dbdf-4e01-a271-40bafd0ee395",
+                        "id": "11ba2e9f-f90c-4cde-9085-a58020ff22ae",
                         "exec": [
                             "pm.environment.set(\"access_token\", pm.response.json()[\"access_token\"]);"
                         ],
@@ -74,7 +74,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "83d95762-6c31-4c5f-9f3f-700cf42b6f76",
+                        "id": "01853a0e-0d59-490b-b5f0-f4c2fce8c4ca",
                         "exec": [
                             "pm.environment.set(\"access_token_2\", pm.response.json()[\"access_token\"]);"
                         ],
@@ -105,12 +105,48 @@
             "response": []
         },
         {
+            "name": "Get Admin Access Token",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "f4ccc4fd-ecbf-475a-8652-b81e61db8c86",
+                        "exec": [
+                            "pm.environment.set(\"admin_access_token\", pm.response.json()[\"access_token\"]);"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "type": "text",
+                        "value": "application/json"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\"client_id\":\"SRh77fnlYCwiZcxYVW6bDKinbscF8Cip\",\"client_secret\":\"ofOWYAYqqCBCldwLzQEsUwRF5T-9xqhId-DFH_NwkI_Sd8kzy1OMxy91-TEude2a\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
+                },
+                "url": {
+                    "raw": "https://auth.elecular.com/oauth/token",
+                    "protocol": "https",
+                    "host": ["auth", "elecular", "com"],
+                    "path": ["oauth", "token"]
+                }
+            },
+            "response": []
+        },
+        {
             "name": "Create Project",
             "event": [
                 {
                     "listen": "test",
                     "script": {
-                        "id": "f208b292-ab76-4772-8d78-43cccac7db4b",
+                        "id": "6fa7cc74-aad2-4391-a085-55cc8d8b75a3",
                         "exec": [
                             "pm.test(\"Status code is 201\", function () {",
                             "    pm.response.to.have.status(201);",
@@ -159,7 +195,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "ce58b625-95c2-43df-b5ad-542968c53193",
+                        "id": "03ef0aca-c83a-49b7-9c68-0fe367203b40",
                         "exec": [
                             "pm.test(\"Status code is 201\", function () {",
                             "    pm.response.to.have.status(201);",
@@ -218,7 +254,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "26e85bf8-4e05-474e-9dfc-581d2eae4b73",
+                        "id": "261ca823-230d-4c89-9fba-feb7aeab4a2b",
                         "exec": [
                             "pm.test(\"Status code is 400\", function () {",
                             "    pm.response.to.have.status(400);",
@@ -268,7 +304,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "4c143994-265a-40dd-a42c-93097fe88766",
+                        "id": "e44a6e20-1c21-4738-a88b-03548c923b7e",
                         "exec": [
                             "pm.test(\"Status code is 201\", function () {",
                             "    pm.response.to.have.status(201);",
@@ -329,7 +365,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "9a35b2bf-2d17-4550-9862-03f6e531e818",
+                        "id": "99e5d22e-a196-4bee-a37a-c8175b9685bb",
                         "exec": [
                             "pm.test(\"Status code is 400\", function () {",
                             "    pm.response.to.have.status(400);",
@@ -384,14 +420,14 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "726f3dcb-bb37-499f-819a-f04dae2ed347",
+                        "id": "e63e0a28-c194-43f0-bb82-7551643b7dfa",
                         "exec": [
                             "pm.test(\"Status code is 200\", function () {",
                             "    pm.response.to.have.status(200);",
                             "});",
                             "",
                             "",
-                            "pm.test(\"Your test name\", function () {",
+                            "pm.test(\"Has experiment stats\", function () {",
                             "    var jsonData = pm.response.json();",
                             "    pm.expect(jsonData.experimentName).to.eql(\"exp1\");",
                             "});"
@@ -449,7 +485,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "74af1ff1-31f3-4acd-923e-5c742018660b",
+                        "id": "6681e019-351e-4670-a66e-0f1be4698237",
                         "exec": [
                             "pm.test(\"Status code is 401\", function () {",
                             "    pm.response.to.have.status(401);",
@@ -487,11 +523,11 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/projects/5e865ed82a2aeb6436f498dc/experiments/exp1/environments/prod/stats",
+                    "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1/environments/prod/stats",
                     "host": ["localhost"],
                     "path": [
                         "projects",
-                        "5e865ed82a2aeb6436f498dc",
+                        "{{sampleProjectId}}",
                         "experiments",
                         "exp1",
                         "environments",
@@ -515,7 +551,7 @@
                 {
                     "listen": "test",
                     "script": {
-                        "id": "5d824485-5af7-4dfd-b0bb-50abfbfe4f16",
+                        "id": "c48a863d-7c82-490e-89ea-39cbbf0b6e3c",
                         "exec": [
                             "pm.test(\"Status code is 403\", function () {",
                             "    pm.response.to.have.status(403);",
@@ -553,11 +589,11 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/projects/5e865ed82a2aeb6436f498dc/experiments/exp1/environments/prod/stats",
+                    "raw": "localhost/projects/{{sampleProjectId}}/experiments/exp1/environments/prod/stats",
                     "host": ["localhost"],
                     "path": [
                         "projects",
-                        "5e865ed82a2aeb6436f498dc",
+                        "{{sampleProjectId}}",
                         "experiments",
                         "exp1",
                         "environments",
@@ -571,6 +607,110 @@
                             "disabled": true
                         }
                     ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Project Mau",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "975451d9-59bf-4747-ba34-4256a1a4720e",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "    pm.expect(pm.response.json().length).to.equal(0)",
+                            "",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "type": "text",
+                        "value": "",
+                        "disabled": true
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{admin_access_token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/projects/{{sampleProjectId}}/stats/mau",
+                    "host": ["localhost"],
+                    "path": ["projects", "{{sampleProjectId}}", "stats", "mau"]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Project Mau Without Acess Token",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "80352f10-45d5-4c38-83f9-2518823293ca",
+                        "exec": [
+                            "pm.test(\"Status code is 403\", function () {",
+                            "    pm.response.to.have.status(403);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "type": "text",
+                        "value": "",
+                        "disabled": true
+                    },
+                    {
+                        "key": "Authorization",
+                        "value": "Bearer {{access_token}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/projects/{{sampleProjectId}}/stats/mau",
+                    "host": ["localhost"],
+                    "path": ["projects", "{{sampleProjectId}}", "stats", "mau"]
                 }
             },
             "response": []
