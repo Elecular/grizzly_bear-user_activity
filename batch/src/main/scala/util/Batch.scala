@@ -29,7 +29,7 @@ abstract class Batch(name: String, aggregationInterval: Long, timeOffset: Long =
       * It gets timestamp of last successful batch and runs the next batch based on that
       */
     def run(): Unit = {
-        val currentUnitTime = System.currentTimeMillis() / aggregationInterval // Gets the current hour number etc.
+        val currentUnitTime = System.currentTimeMillis() / aggregationInterval // Gets the current hour number, day number etc.
         val lastBatchRunTimestamp = getLastSuccessfulRunTimestamp(name)
         .getOrElse((currentUnitTime - timeOffset) * aggregationInterval) //If no batches ran previously, we are defaulting to the time offset that was requested
         val startTime = lastBatchRunTimestamp

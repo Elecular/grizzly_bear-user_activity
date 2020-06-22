@@ -36,6 +36,8 @@ services:
     environment:
       MONGODB_URL: mongodb://username:password@database:27017
       MONGODB_DATABASE: user_activity
+      PUBLIC_EXPERIMENTS_SERVICE_HOST: experiments-web
+      PUBLIC_EXPERIMENTS_SERVICE_PORT: 80
   experiments-web:
     depends_on:
       - db

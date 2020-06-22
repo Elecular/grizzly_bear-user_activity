@@ -1,0 +1,18 @@
+{
+    "bsonType": "object",
+    "required": ["projectId", "date", "count"],
+    "properties": {
+        "projectId": {
+            "bsonType": "string",
+            "description": "The action performed by this user"
+        },
+        "date": {
+            "bsonType": "string",
+            "description": "Date of when the MAU was calculated"
+        },
+        "count": {
+            "bsonType": "number",
+            "description": "Magnitude of this event. For example, if this is a purchase event, the amount is the money spent on the purchase"
+        }
+    }
+}

@@ -1,9 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const experimentStatsController = require("../controllers/experiment_stats");
+const projectStatsController = require("../controllers/project_stats");
 const userSessionController = require("../controllers/user_session");
 const userActivityController = require("../controllers/user_activity");
-const validateOwner = require("../api/experiments").validateOwner;
+const {
+    validateOwner,
+    hasPermission,
+    Permissions,
+} = require("../api/experiments");
 const createError = require("http-errors");
 const { checkSchema, validationResult } = require("express-validator");
 const getBatchRuns = require("../controllers/batch_runs").getBatchRuns;
@@ -170,5 +175,25 @@ router.get(
         }
     },
 );
+
+/**
+ * Gets experiment stats of given project, experiment and environment
+ */
+router.get("/projects/:projectId/stats/mau", async (req, res, next) => {
+    try {
+        if (
+            !(await hasPermission(
+                req.headers["authorization"],
+                Permissions.READ_ALL_MAU,
+            ))
+        ) {
+            throw new createError(403, "Forbidden");
+        }
+        res.status(200);
+        res.json(await projectStatsController.getMau(req.params["projectId"]));
+    } catch (err) {
+        next(err);
+    }
+});
 
 module.exports = router;
