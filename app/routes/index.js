@@ -177,7 +177,8 @@ router.get(
 );
 
 /**
- * Gets experiment stats of given project, experiment and environment
+ * Gets monthly active users for given project
+ * This gives a MAU for all recorded dates
  */
 router.get("/projects/:projectId/stats/mau", async (req, res, next) => {
     try {
@@ -190,7 +191,35 @@ router.get("/projects/:projectId/stats/mau", async (req, res, next) => {
             throw new createError(403, "Forbidden");
         }
         res.status(200);
-        res.json(await projectStatsController.getMau(req.params["projectId"]));
+        res.json(
+            await projectStatsController.getMau({
+                projectId: req.params["projectId"],
+            }),
+        );
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * Gets monthly active users for all project
+ */
+router.get("/projects/stats/mau", async (req, res, next) => {
+    try {
+        if (
+            !(await hasPermission(
+                req.headers["authorization"],
+                Permissions.READ_ALL_MAU,
+            ))
+        ) {
+            throw new createError(403, "Forbidden");
+        }
+        res.status(200);
+        res.json(
+            await projectStatsController.getMau({
+                date: req.query["date"],
+            }),
+        );
     } catch (err) {
         next(err);
     }

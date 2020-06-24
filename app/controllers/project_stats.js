@@ -1,18 +1,11 @@
-const createError = require("http-errors");
 const mongo = require("../db/mongodb");
 
 /*
- * Gets monthly active users
+ * Gets monthly active users with given filter.
+ * Example filter: {projectId: 507f1f77bcf86cd799439011}
  */
-module.exports.getMau = async projectId => {
-    if (!projectId) {
-        throw new createError(400, "Invalid projectId");
-    }
-
+module.exports.getMau = async filter => {
     const db = await mongo.connect();
-    const mauStats = await db.collection("project_mau").find({
-        projectId,
-    });
-
+    const mauStats = await db.collection("project_mau").find(filter);
     return await mauStats.toArray();
 };

@@ -714,6 +714,122 @@
                 }
             },
             "response": []
+        },
+        {
+            "name": "Get MAU For All Projects",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "bd9e1e23-350c-46bd-8f4f-40c23bb84893",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "    pm.expect(pm.response.json().length).to.equal(0)",
+                            "",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "type": "text",
+                        "value": "",
+                        "disabled": true
+                    },
+                    {
+                        "key": "Authorization",
+                        "type": "text",
+                        "value": "Bearer {{admin_access_token}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/projects/stats/mau?date=01-4600",
+                    "host": ["localhost"],
+                    "path": ["projects", "stats", "mau"],
+                    "query": [
+                        {
+                            "key": "date",
+                            "value": "01-4600"
+                        }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get MAU For All Projects Without Permission",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "7466b544-b293-4ebe-ad0e-a3cd4571c364",
+                        "exec": [
+                            "pm.test(\"Status code is 403\", function () {",
+                            "    pm.response.to.have.status(403);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "type": "text",
+                        "value": "",
+                        "disabled": true
+                    },
+                    {
+                        "key": "Authorization",
+                        "type": "text",
+                        "value": "Bearer {{access_token}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/projects/stats/mau?date=01-4600",
+                    "host": ["localhost"],
+                    "path": ["projects", "stats", "mau"],
+                    "query": [
+                        {
+                            "key": "date",
+                            "value": "01-4600"
+                        }
+                    ]
+                }
+            },
+            "response": []
         }
     ],
     "protocolProfileBehavior": {}
