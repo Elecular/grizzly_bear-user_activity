@@ -57,12 +57,12 @@
                 ],
                 "body": {
                     "mode": "raw",
-                    "raw": "{\"client_id\":\"xo509wTObnqcYKiOgLCJoLcHqSpFKCjL\",\"client_secret\":\"O9WUmL1WtKRJ35TByGcrcoau0tNE9m5Yd1SC4x4V9VzQoRX4c1XUBhO6BBPYmc5B\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
+                    "raw": "{\"client_id\":\"8R7YBPp1RZHySEwxead6GQUwDcLFIHFI\",\"client_secret\":\"T_HItnlZg9N-fPtSWpF_nYpW4VvqbksQkt77oIy5TZ-fuhHGE34exdUpcZRLvya1\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
                 },
                 "url": {
-                    "raw": "https://auth.elecular.com/oauth/token",
+                    "raw": "https://grizzly-bear-dev.eu.auth0.com/oauth/token",
                     "protocol": "https",
-                    "host": ["auth", "elecular", "com"],
+                    "host": ["grizzly-bear-dev", "eu", "auth0", "com"],
                     "path": ["oauth", "token"]
                 }
             },
@@ -93,12 +93,12 @@
                 ],
                 "body": {
                     "mode": "raw",
-                    "raw": "{\"client_id\":\"EYHbAnyR8eou9NmnjwEtRWSWM3ZcmMe3\",\"client_secret\":\"3CMEeO77nQQlzwe2VB0Zk9x82rjCkTxV_55_-ReXWyu7sKzqFUaRwxnNlqbFIFgd\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
+                    "raw": "{\"client_id\":\"pDBt9PPrzQCGzOK3KLIGw3P3K4aGOsjB\",\"client_secret\":\"RH_TZ10o7ScOyq1yu12Mrr59F099SxkptwAJBjrhzCkNZe80HCy6eq4P0xw9bpBB\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
                 },
                 "url": {
-                    "raw": "https://auth.elecular.com/oauth/token",
+                    "raw": "https://grizzly-bear-dev.eu.auth0.com/oauth/token",
                     "protocol": "https",
-                    "host": ["auth", "elecular", "com"],
+                    "host": ["grizzly-bear-dev", "eu", "auth0", "com"],
                     "path": ["oauth", "token"]
                 }
             },
@@ -129,12 +129,12 @@
                 ],
                 "body": {
                     "mode": "raw",
-                    "raw": "{\"client_id\":\"SRh77fnlYCwiZcxYVW6bDKinbscF8Cip\",\"client_secret\":\"ofOWYAYqqCBCldwLzQEsUwRF5T-9xqhId-DFH_NwkI_Sd8kzy1OMxy91-TEude2a\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
+                    "raw": "{\"client_id\":\"JznMEKtDXtLzsyEpJkPIs1LvHDd5FoZO\",\"client_secret\":\"UYSXMQ6xB7YKayJdARI4Af48DjUgKmhWQpvD0Pb3db7TElrEzjL8Bnmq_Sp3KiNJ\",\"audience\":\"http://www.grizzlybear-experiments.com\",\"grant_type\":\"client_credentials\"}"
                 },
                 "url": {
-                    "raw": "https://auth.elecular.com/oauth/token",
+                    "raw": "https://grizzly-bear-dev.eu.auth0.com/oauth/token",
                     "protocol": "https",
-                    "host": ["auth", "elecular", "com"],
+                    "host": ["grizzly-bear-dev", "eu", "auth0", "com"],
                     "path": ["oauth", "token"]
                 }
             },
