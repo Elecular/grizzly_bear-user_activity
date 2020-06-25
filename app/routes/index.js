@@ -185,7 +185,7 @@ router.get("/projects/:projectId/stats/mau", async (req, res, next) => {
         if (
             !(await hasPermission(
                 req.headers["authorization"],
-                Permissions.READ_ALL_MAU,
+                Permissions.READ_ALL_PROJECTS,
             ))
         ) {
             throw new createError(403, "Forbidden");
@@ -209,7 +209,7 @@ router.get("/projects/stats/mau", async (req, res, next) => {
         if (
             !(await hasPermission(
                 req.headers["authorization"],
-                Permissions.READ_ALL_MAU,
+                Permissions.READ_ALL_PROJECTS,
             ))
         ) {
             throw new createError(403, "Forbidden");
