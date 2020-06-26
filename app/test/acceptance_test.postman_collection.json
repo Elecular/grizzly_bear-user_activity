@@ -657,9 +657,15 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/projects/{{sampleProjectId}}/stats/mau",
+                    "raw": "localhost/admin/projects/{{sampleProjectId}}/stats/mau",
                     "host": ["localhost"],
-                    "path": ["projects", "{{sampleProjectId}}", "stats", "mau"]
+                    "path": [
+                        "admin",
+                        "projects",
+                        "{{sampleProjectId}}",
+                        "stats",
+                        "mau"
+                    ]
                 }
             },
             "response": []
@@ -708,9 +714,15 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/projects/{{sampleProjectId}}/stats/mau",
+                    "raw": "localhost/admin/projects/{{sampleProjectId}}/stats/mau",
                     "host": ["localhost"],
-                    "path": ["projects", "{{sampleProjectId}}", "stats", "mau"]
+                    "path": [
+                        "admin",
+                        "projects",
+                        "{{sampleProjectId}}",
+                        "stats",
+                        "mau"
+                    ]
                 }
             },
             "response": []
@@ -761,9 +773,9 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/projects/stats/mau?date=01-4600",
+                    "raw": "localhost/admin/projects/stats/mau?date=01-4600",
                     "host": ["localhost"],
-                    "path": ["projects", "stats", "mau"],
+                    "path": ["admin", "projects", "stats", "mau"],
                     "query": [
                         {
                             "key": "date",
@@ -818,14 +830,73 @@
                     }
                 },
                 "url": {
-                    "raw": "localhost/projects/stats/mau?date=01-4600",
+                    "raw": "localhost/admin/projects/stats/mau?date=01-4600",
                     "host": ["localhost"],
-                    "path": ["projects", "stats", "mau"],
+                    "path": ["admin", "projects", "stats", "mau"],
                     "query": [
                         {
                             "key": "date",
                             "value": "01-4600"
                         }
+                    ]
+                }
+            },
+            "response": []
+        },
+        {
+            "name": "Get Performance Of Project",
+            "event": [
+                {
+                    "listen": "test",
+                    "script": {
+                        "id": "91ccb959-d030-4092-99f3-c1a4c119fa54",
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "    pm.response.to.have.status(200);",
+                            "    pm.expect(pm.response.json().length).to.equal(0)",
+                            "",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
+                }
+            ],
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "",
+                        "type": "text",
+                        "value": "",
+                        "disabled": true
+                    },
+                    {
+                        "key": "Authorization",
+                        "type": "text",
+                        "value": "Bearer {{admin_access_token}}"
+                    }
+                ],
+                "body": {
+                    "mode": "raw",
+                    "raw": "",
+                    "options": {
+                        "raw": {
+                            "language": "json"
+                        }
+                    }
+                },
+                "url": {
+                    "raw": "localhost/admin/projects/{{sampleProjectId}}/stats/performance",
+                    "host": ["localhost"],
+                    "path": [
+                        "admin",
+                        "projects",
+                        "{{sampleProjectId}}",
+                        "stats",
+                        "performance"
                     ]
                 }
             },

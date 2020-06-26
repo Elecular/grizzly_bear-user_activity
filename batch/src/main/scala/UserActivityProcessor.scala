@@ -1,6 +1,7 @@
 import util._
 import experimentStats._
 import monthlyActiveUsers.MonthlyActiveUsers
+import dailyPerformanceMetrics.DailyPerformanceMetrics
 
 object UserActivityProcessor {
 
@@ -21,6 +22,7 @@ object UserActivityProcessor {
     def initBatches(): Unit = {
         HourlyExperimentStats
         MonthlyActiveUsers
+        DailyPerformanceMetrics
     }
 
 }

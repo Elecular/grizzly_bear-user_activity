@@ -1,14 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const experimentStatsController = require("../controllers/experiment_stats");
-const projectStatsController = require("../controllers/project_stats");
 const userSessionController = require("../controllers/user_session");
 const userActivityController = require("../controllers/user_activity");
-const {
-    validateOwner,
-    hasPermission,
-    Permissions,
-} = require("../api/experiments");
+const { validateOwner } = require("../api/experiments");
 const createError = require("http-errors");
 const { checkSchema, validationResult } = require("express-validator");
 const getBatchRuns = require("../controllers/batch_runs").getBatchRuns;
@@ -175,54 +170,5 @@ router.get(
         }
     },
 );
-
-/**
- * Gets monthly active users for given project
- * This gives a MAU for all recorded dates
- */
-router.get("/projects/:projectId/stats/mau", async (req, res, next) => {
-    try {
-        if (
-            !(await hasPermission(
-                req.headers["authorization"],
-                Permissions.READ_ALL_PROJECTS,
-            ))
-        ) {
-            throw new createError(403, "Forbidden");
-        }
-        res.status(200);
-        res.json(
-            await projectStatsController.getMau({
-                projectId: req.params["projectId"],
-            }),
-        );
-    } catch (err) {
-        next(err);
-    }
-});
-
-/**
- * Gets monthly active users for all project
- */
-router.get("/projects/stats/mau", async (req, res, next) => {
-    try {
-        if (
-            !(await hasPermission(
-                req.headers["authorization"],
-                Permissions.READ_ALL_PROJECTS,
-            ))
-        ) {
-            throw new createError(403, "Forbidden");
-        }
-        res.status(200);
-        res.json(
-            await projectStatsController.getMau({
-                date: req.query["date"],
-            }),
-        );
-    } catch (err) {
-        next(err);
-    }
-});
 
 module.exports = router;

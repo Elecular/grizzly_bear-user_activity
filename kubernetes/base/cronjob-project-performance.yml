@@ -1,0 +1,33 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: project-mau
+spec:
+  schedule: "0 */6 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: project-mau
+            image: BATCH_DOCKER_IMAGE
+            command: ["/bin/bash"]
+            args: ["-c", "./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class \"UserActivityProcessor\" target/scala-2.11/build.jar DailyPerformanceMetrics"]
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: MONGODB_URL
+                valueFrom:
+                  secretKeyRef:
+                    name: user-activity-db-secret
+                    key: MONGODB_URL
+              - name: MONGODB_DATABASE
+                valueFrom:
+                  secretKeyRef:
+                    name: user-activity-db-secret
+                    key: MONGODB_DATABASE
+              - name: MASTER
+                valueFrom:
+                  configMapKeyRef:
+                    name: user-activity-config-map
+                    key: SPARK_CLUSTER_MASTER
+          restartPolicy: Never

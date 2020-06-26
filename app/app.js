@@ -4,6 +4,7 @@ const logger = require("morgan");
 const log4js = require("log4js").getLogger();
 const httpHandler = require("./middleware/httpErrorHandler");
 const indexRouter = require("./routes/index");
+const adminRouter = require("./routes/admin");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/", indexRouter);
+app.use("/admin/", adminRouter);
 app.use(httpHandler);
 
 log4js.level = process.env.LOG_LEVEL || "debug";

@@ -1,0 +1,32 @@
+{
+    "bsonType": "object",
+    "required": [
+        "projectId",
+        "userAction",
+        "date",
+        "numberOfSessions",
+        "amount"
+    ],
+    "properties": {
+        "projectId": {
+            "bsonType": "string",
+            "description": "The action performed by this user"
+        },
+        "userAction": {
+            "bsonType": "string",
+            "description": "The action performed by this user"
+        },
+        "date": {
+            "bsonType": "string",
+            "description": "Date of when the MAU was calculated"
+        },
+        "numberOfSessions": {
+            "bsonType": "number",
+            "description": "Number of times this action has happened"
+        },
+        "amount": {
+            "bsonType": "number",
+            "description": "Number of times this action has happened"
+        }
+    }
+}
