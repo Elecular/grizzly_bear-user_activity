@@ -1,7 +1,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: project-mau
+  name: project-performance
 spec:
   schedule: "0 */6 * * *"
   jobTemplate:
@@ -9,7 +9,7 @@ spec:
       template:
         spec:
           containers:
-          - name: project-mau
+          - name: project-performance
             image: BATCH_DOCKER_IMAGE
             command: ["/bin/bash"]
             args: ["-c", "./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class \"UserActivityProcessor\" target/scala-2.11/build.jar DailyPerformanceMetrics"]

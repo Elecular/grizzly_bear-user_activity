@@ -21,7 +21,7 @@ object MonthlyActiveUsers extends Batch("MonthlyActiveUsers", AggregationInterva
     override def execute(startTime: Long, endTime: Long): Unit = {
 
         val monthLength = AggregationInterval.Daily * 30
-        val dateFormat = new SimpleDateFormat("MM-yyyy")
+        val dateFormat = new SimpleDateFormat("dd-MM-yyyy")
 
         //We are getting data from past 30 days
         val userSessions = UserSessionExtractor.extract(startTime - monthLength, startTime)
