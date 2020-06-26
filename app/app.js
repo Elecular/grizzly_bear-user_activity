@@ -7,6 +7,7 @@ const indexRouter = require("./routes/index");
 const adminRouter = require("./routes/admin");
 const cors = require("cors");
 const rateLimit = require("express-rate-limit");
+const adminAccessOnly = require("./middleware/adminAccessOnly");
 
 const app = express();
 const limiter = rateLimit({
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/", indexRouter);
+app.use("/admin/", adminAccessOnly);
 app.use("/admin/", adminRouter);
 app.use(httpHandler);
 
