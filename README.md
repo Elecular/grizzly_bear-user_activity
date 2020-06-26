@@ -4,6 +4,40 @@
 
 ---
 
+### Architecture
+
+#### Responsibilites
+These are the responsibilites of this services:
+
+* Offers Rest API to log user sessions and activity
+* Aggregates the following stats using spark batches
+  * Experiment Stats: These are variation stats that are displayed to the user. These stats help the user determine which variation of an experiment is performing better
+  * Monthly Active Users: Calculates MAU for all projects. These stats are viewed by us to determine how much we must charge our clients. 
+  * Daily Performance Metrics: These stats show how each project is performing. These stats include number of sessions, ad clicks, transactions, player retention etc. These stats help us as a company to see how well a project is doing and offer some help if needed.
+* Serves experiment stats to clients and performance metrics to admin. Admins are people in our company that can look at how well projects.
+
+#### Rest API Documentation
+
+```
+https://documenter.getpostman.com/view/11861808/T17Aiq4B?version=latest
+```
+
+#### Batch Documentation
+
+These are the following batches that are running regularly
+
+<b>Experiment Stats</b>
+
+This batch takes a start time and end time, and calculates the experiment stats for the given time range. This batch run hourly.
+
+<b>Monthly Active Users</b>
+
+This batch calculates MAU at a given day for all projects. It does this by using the given date and then calculating number of unique users in the past 30 days. This batch runs daily
+
+<b>Daily Performance Metrics</b>
+
+This batch calculates number of all user activities that occured in a given day. This batch run daily.
+
 ### Development
 
 #### Web Development
