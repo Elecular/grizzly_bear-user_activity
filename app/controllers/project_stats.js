@@ -27,7 +27,6 @@ module.exports.getMauForAllProjects = async date => {
  */
 module.exports.getPerformanceStats = async projectId => {
     const db = await mongo.connect();
-    console.log(await db.collection("project_performance").countDocuments());
     const performance = await db.collection("project_performance").find({
         projectId,
     });

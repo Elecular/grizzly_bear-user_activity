@@ -18,18 +18,20 @@ import util.{AggregationInterval, Batch, MongoConnector}
   */
 object DailyPerformanceMetrics extends Batch("DailyPerformanceMetrics", AggregationInterval.Daily, 1) {
 
-    /**
-      * Calculates the performance of all projects over given time.
-      */
+    /*
+     * Calculates the performance of all projects for given date
+     * The startTime is taken as date
+     * The endTime is not used. It is ignored
+     */
     override def execute(startTime: Long, endTime: Long): Unit = {
 
         val dateFormat = new SimpleDateFormat("MM-yyyy")
 
-        val userSessions = UserSessionExtractor.extract(startTime, endTime)
-        val userActivity = UserActivityExtractor.extract(startTime, endTime)
+        val userSessions = UserSessionExtractor.extract(startTime - AggregationInterval.Daily, startTime)
+        val userActivity = UserActivityExtractor.extract(startTime - AggregationInterval.Daily, startTime)
 
         val performanceMetrics = calculatePerformance(userSessions, userActivity)
-        .withColumn("date", typedLit(dateFormat.format(endTime)))
+        .withColumn("date", typedLit(dateFormat.format(startTime)))
         .withColumn("_id", sha2(concat(
             col("date"),
             col("userAction"),
