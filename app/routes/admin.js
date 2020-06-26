@@ -31,6 +31,7 @@ router.get("/projects/:projectId/stats/mau", async (req, res, next) => {
 
 /**
  * Gets monthly active users for all project at given date
+ * Date must be in format dd-MM-yyyy
  */
 router.get("/projects/stats/mau", async (req, res, next) => {
     try {
