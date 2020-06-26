@@ -25,7 +25,7 @@ object DailyPerformanceMetrics extends Batch("DailyPerformanceMetrics", Aggregat
      */
     override def execute(startTime: Long, endTime: Long): Unit = {
 
-        val dateFormat = new SimpleDateFormat("MM-yyyy")
+        val dateFormat = new SimpleDateFormat("dd-MM-yyyy")
 
         val userSessions = UserSessionExtractor.extract(startTime - AggregationInterval.Daily, startTime)
         val userActivity = UserActivityExtractor.extract(startTime - AggregationInterval.Daily, startTime)
