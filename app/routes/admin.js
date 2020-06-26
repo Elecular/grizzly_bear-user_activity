@@ -7,7 +7,6 @@ const projectStatsController = require("../controllers/project_stats");
  * This gives a MAU for all recorded dates
  */
 router.get("/projects/:projectId/stats/mau", async (req, res, next) => {
-    console.log("Hello");
     try {
         res.status(200);
         res.json(
