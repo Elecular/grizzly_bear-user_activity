@@ -12,7 +12,7 @@
         },
         "count": {
             "bsonType": "number",
-            "description": "Magnitude of this event. For example, if this is a purchase event, the amount is the money spent on the purchase"
+            "description": "Number of Monthly Active users recoded at this date"
         }
     }
 }

@@ -62,4 +62,4 @@ services:
       PRIVATE_EXPERIMENTS_SERVICE_HOST: experiments-web
       PRIVATE_EXPERIMENTS_SERVICE_PORT: 8080
     command: >
-      bash -c "sbt \"local/run HourlyExperimentStats 79839129600000 79839302400000\" && sbt \"local/run MonthlyActiveUsers 79839302400000 79839302400000\""
+      bash -c "sbt \"local/run HourlyExperimentStats 79839129600000 79839302400000; local/run MonthlyActiveUsers 79839302400000 79839302400000; local/run DailyPerformanceMetrics 79839302400000 79839302400000\""
