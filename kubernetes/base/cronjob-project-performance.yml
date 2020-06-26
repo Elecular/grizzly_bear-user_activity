@@ -14,6 +14,10 @@ spec:
             command: ["/bin/bash"]
             args: ["-c", "./spark-2.4.5-bin-hadoop2.7/bin/spark-submit --class \"UserActivityProcessor\" target/scala-2.11/build.jar DailyPerformanceMetrics"]
             imagePullPolicy: IfNotPresent
+            resources:
+              limits: 
+                memory: "1024Mi"
+                cpu: "334m"
             env:
               - name: MONGODB_URL
                 valueFrom:
