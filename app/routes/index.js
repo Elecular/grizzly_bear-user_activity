@@ -6,16 +6,23 @@ const userActivityController = require("../controllers/user_activity");
 const { validateOwner } = require("../api/experiments");
 const createError = require("http-errors");
 const { checkSchema, validationResult } = require("express-validator");
-const getBatchRuns = require("../controllers/batch_runs").getBatchRuns;
-
+const { getBatchRuns, getBatchStatus } = require("../controllers/batch_runs");
+const { isConnected } = require("../db/mongodb");
 /* GET home page. */
 router.get("/", function(req, res) {
     res.send("Welcome to the User Activity Service API!");
 });
 
-router.get("/status", function(req, res) {
+router.get("/status", async function(req, res) {
+    res.json({
+        hourlyExperimentStats: await getBatchStatus("HourlyExperimentStats"),
+        monthlyAtiveUsers: await getBatchStatus("MonthlyActiveUsers"),
+        dailyPerformanceMetrics: await getBatchStatus(
+            "DailyPerformanceMetrics",
+        ),
+        mongodbStatus: await isConnected(),
+    });
     res.status(200);
-    res.json();
 });
 
 router.get(
