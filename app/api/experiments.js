@@ -64,7 +64,7 @@ module.exports.hasPermission = async (authToken, permission) => {
 module.exports.Permissions = {
     ADMIN: {
         READ: {
-            PROJECTS: "admin.read:projectcs",
+            PROJECTS: "admin.read:projects",
         },
     },
 };
