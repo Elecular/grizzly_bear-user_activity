@@ -16,7 +16,7 @@
         },
         "success": {
             "bsonType": "bool",
-            "description": "The unix timestamp (milliseconds) on which this action happened"
+            "description": "Did the batch run successfully"
         },
         "error": {
             "bsonType": "string",
