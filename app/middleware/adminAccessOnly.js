@@ -5,7 +5,7 @@ const adminAccessOnly = async (req, res, next) => {
     if (
         !(await hasPermission(
             req.headers["authorization"],
-            Permissions.READ_ALL_PROJECTS,
+            Permissions.ADMIN.READ.PROJECTS,
         ))
     ) {
         next(createError(403, "Forbidden"));
