@@ -11,7 +11,7 @@ const adminAccessOnly = require("./middleware/adminAccessOnly");
 
 const app = express();
 const limiter = rateLimit({
-    windowMs: 50 * 60 * 1000, // 15 minutes
+    windowMs: 60 * 60 * 1000, // 15 minutes
     max: 150, // limit each IP to 150 requests per windowMs,
     message:
         "Too many requests. You can log upto 200 events every hour. Please contact info@elecular.com if you need to raise this limit.",
